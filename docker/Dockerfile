@@ -14,7 +14,8 @@ RUN apt update && apt install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
-    libzip-dev
+    libzip-dev \
+    libicu-dev
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
@@ -26,7 +27,8 @@ RUN docker-php-ext-install \
     exif \
     pcntl \
     gd \
-    zip
+    zip \
+    intl
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
