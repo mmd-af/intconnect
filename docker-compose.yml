@@ -15,7 +15,7 @@ services:
       APP_DEBUG: "true"
       TZ: Europe/Bucharest
     volumes:
-      - './src:/var/www/html'
+      - './src:/var/www'
       - './docker/php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini'
     networks:
       - intconnect
@@ -34,16 +34,16 @@ services:
       FPM_HOST: "php:9000"
       TZ: Europe/Bucharest
     volumes:
-      - './src:/var/www/html'
+      - './src:/var/www'
     networks:
       - intconnect
 
   node:
     image: node:20
     container_name: intconnect-node
-    working_dir: /var/www/html
+    working_dir: /var/www
     volumes:
-      - './src:/var/www/html'
+      - './src:/var/www'
     tty: true
     networks:
       - intconnect
