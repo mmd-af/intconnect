@@ -1,0 +1,87 @@
+services:
+  php:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: intconnect-php
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      APP_DEBUG: "true"
+      TZ: Europe/Bucharest
+    volumes:
+      - './src:/var/www/html'
+      - './docker/php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini'
+    networks:
+      - intconnect
+
+  nginx:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.nginx
+    container_name: intconnect-nginx
+    restart: unless-stopped
+    depends_on:
+      - php
+    ports:
+      - '127.0.0.1:8085:80'
+    environment:
+      FPM_HOST: "php:9000"
+      TZ: Europe/Bucharest
+    volumes:
+      - './src:/var/www/html'
+    networks:
+      - intconnect
+
+  node:
+    image: node:20
+    container_name: intconnect-node
+    working_dir: /var/www/html
+    volumes:
+      - './src:/var/www/html'
+    tty: true
+    networks:
+      - intconnect
+
+  database:
+    image: mariadb:11.0
+    container_name: intconnect-database
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+            "CMD",
+            "healthcheck.sh",
+            "--su-mysql",
+            "--connect",
+            "--innodb_initialized"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 1m
+    ports:
+      - "127.0.0.1:3306:3306/tcp"
+    hostname: database
+    volumes:
+      - "database:/var/lib/mysql"
+    stop_signal: SIGINT
+    environment:
+      MYSQL_ROOT_PASSWORD: intconnect
+      MYSQL_PASSWORD: intconnect
+      MYSQL_USER: intconnect
+      MYSQL_DATABASE: intconnect
+      TZ: Europe/Bucharest
+    networks:
+      - intconnect
+
+networks:
+  intconnect:
+
+volumes:
+  database:
