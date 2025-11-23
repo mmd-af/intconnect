@@ -135,10 +135,10 @@ jobs:
             cd ${APP_DIR}
 
             echo "Pulling latest image for PHP service..."
-            sudo docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull php
+            sudo docker compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull php
 
             echo "Starting application..."
-            sudo docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" up -d --remove-orphans
+            sudo docker compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" up -d --remove-orphans
 
             echo "Deployment successful!"
           EOF
