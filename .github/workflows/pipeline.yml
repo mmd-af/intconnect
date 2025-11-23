@@ -130,15 +130,15 @@ jobs:
           ssh $SSH_OPTIONS $SSH_USER_HOST << EOF
             set -e
             echo "Logging into GitHub Container Registry..."
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
             cd ${APP_DIR}
 
             echo "Pulling latest image for PHP service..."
-            docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull php
+            sudo docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull php
 
             echo "Starting application..."
-            docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" up -d --remove-orphans
+            sudo docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" up -d --remove-orphans
 
             echo "Deployment successful!"
           EOF
