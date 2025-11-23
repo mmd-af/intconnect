@@ -103,27 +103,31 @@ jobs:
           cache-to: type=gha,mode=max
 
       # --- Deploy to Server ---
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+      # Explicit SSH Authentication: Write private key to a temp file and use -i flag
       - name: Deploy to Server
         run: |
+          # Create a temporary file for the private key
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa_temp
+          chmod 600 ~/.ssh/id_rsa_temp
+          
+          SSH_OPTIONS="-i ~/.ssh/id_rsa_temp -o StrictHostKeyChecking=no"
+          SSH_USER_HOST="ubuntu@${{ env.SERVER_IP }}"
+
           APP_DIR="/home/ubuntu/intconnect"
           echo "Deploying to ${APP_DIR} on server ${{ env.SERVER_IP }}"
 
           # 1. Create directories
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "mkdir -p ${APP_DIR}/src"
+          ssh $SSH_OPTIONS $SSH_USER_HOST "mkdir -p ${APP_DIR}/src"
 
           # 2. Write the .env file securely
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "echo '${{ env.ENV_FILE_CONTENT }}' > ${APP_DIR}/${{ env.ENV_FILE_PATH }}"
+          ssh $SSH_OPTIONS $SSH_USER_HOST "echo '${{ env.ENV_FILE_CONTENT }}' > ${APP_DIR}/${{ env.ENV_FILE_PATH }}"
 
           # 3. Write the docker-compose file securely using stdin redirection
-          cat "${{ env.COMPOSE_FILE_PATH_LOCAL }}" | ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "cat > ${APP_DIR}/${{ env.COMPOSE_FILE_PATH_REMOTE }}"
+          cat "${{ env.COMPOSE_FILE_PATH_LOCAL }}" | ssh $SSH_OPTIONS $SSH_USER_HOST "cat > ${APP_DIR}/${{ env.COMPOSE_FILE_PATH_REMOTE }}"
 
           # 4. Login to registry, pull new image, and restart services
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} << EOF
+          ssh $SSH_OPTIONS $SSH_USER_HOST << EOF
             set -e
             echo "Logging into GitHub Container Registry..."
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
@@ -138,3 +142,6 @@ jobs:
 
             echo "Deployment successful!"
           EOF
+          
+          # Clean up the temporary private key
+          rm ~/.ssh/id_rsa_temp
