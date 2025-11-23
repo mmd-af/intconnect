@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read   # Required to checkout the code
+      packages: write  # Required to push images to ghcr.io
 
     steps:
       - name: Checkout code
