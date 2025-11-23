@@ -1,0 +1,58 @@
+# docker-compose.prod.yml
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: . # Build context is the project root
+      dockerfile: ./docker/Dockerfile.prod
+    image: ghcr.io/${GITHUB_USERNAME}/intconnect-prod:latest # Use the pre-built image from the CI/CD pipeline
+    container_name: intconnect-prod-php
+    restart: unless-stopped
+    env_file:
+      - ./src/.env # Load environment variables from the .env file
+    volumes:
+      - ./src/storage:/var/www/storage # Persistent storage for logs, sessions, etc.
+    networks:
+      - intconnect-prod
+    depends_on:
+      database:
+        condition: service_healthy
+
+  nginx:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.nginx
+    container_name: intconnect-prod-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - intconnect-prod
+    depends_on:
+      - php
+
+  database:
+    image: mariadb:11.0
+    container_name: intconnect-prod-db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 1m
+    env_file:
+      - ./src/.env # Load database credentials from the .env file
+    volumes:
+      - prod-database:/var/lib/mysql
+    networks:
+      - intconnect-prod
+
+networks:
+  intconnect-prod:
+    name: intconnect-prod-net
+
+volumes:
+  prod-database:
+    name: intconnect-prod-db-data

@@ -1,0 +1,94 @@
+# syntax=docker/dockerfile:1.4
+
+# Arguments for PHP version and user IDs
+ARG PHP_VERSION=8.3
+ARG UID=1000
+ARG GID=1000
+
+# --- Stage 1: Build Frontend Assets (Node) ---
+FROM node:20-alpine AS node_modules_builder
+WORKDIR /app
+COPY src/package.json src/package-lock.json ./
+RUN npm ci --omit=dev
+COPY src/ .
+RUN npm run build
+
+# --- Stage 2: Install Composer Dependencies ---
+FROM composer:2 AS composer_vendor_builder
+WORKDIR /app
+COPY src/composer.json src/composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+COPY src/ .
+
+# --- Stage 3: Final PHP-FPM Application Image ---
+FROM php:${PHP_VERSION}-fpm-alpine AS php_fpm_base
+
+# Set non-interactive frontend for package installations
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install common system dependencies and PHP extensions
+RUN apk add --no-cache \
+    git \
+    zip \
+    unzip \
+    libpq \
+    libpng \
+    libjpeg-turbo \
+    libwebp \
+    libxml2 \
+    icu-libs \
+    freetype \
+    freetype-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    libxml2-dev \
+    icu-dev \
+    # Install Supervisord for process management (if needed, otherwise remove)
+    supervisor \
+    # Clean up apk cache
+    && rm -rf /var/cache/apk/*
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j$(nproc) \
+    bcmath \
+    sockets \
+    pdo_mysql \
+    exif \
+    pcntl \
+    gd \
+    zip \
+    intl \
+    opcache
+
+# Get latest Composer (already handled in composer_vendor_builder, but good for local dev if not using multi-stage)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copy application code and dependencies
+WORKDIR /var/www
+COPY --from=composer_vendor_builder /app/vendor /var/www/vendor
+COPY --from=node_modules_builder /app/public/build /var/www/public/build # Copy compiled assets
+COPY src/ .
+
+# Create a non-root user to run the application
+RUN groupadd -g ${GID} --non-unique intconnect && \
+    useradd -u ${UID} -g intconnect -G www-data -m -d /var/www intconnect
+
+# Copy and make entrypoint script executable
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Set correct permissions for Laravel
+RUN chown -R intconnect:www-data /var/www && \
+    chown -R www-data:www-data storage bootstrap/cache && \
+    chmod -R 775 storage bootstrap/cache
+
+# Switch to the non-root user
+USER intconnect
+
+# Expose port for PHP-FPM
+EXPOSE 9000
+
+# Set entrypoint to our script, and default command to php-fpm
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["php-fpm"]

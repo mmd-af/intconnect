@@ -1,0 +1,133 @@
+name: IaC and Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+jobs:
+  terraform-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read   # Required to checkout the code
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      # --- Terraform Infrastructure ---
+      - name: Terraform Init
+        id: init
+        env:
+          HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
+        run: terraform -chdir=terraform init
+
+      - name: Terraform Plan
+        id: plan
+        env:
+          HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
+          TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          TF_VAR_hetzner_server_type: ${{ vars.HETZNER_SERVER_TYPE }}
+          TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+          TF_VAR_hetzner_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
+        run: terraform -chdir=terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        id: apply
+        env:
+          HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
+          TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          TF_VAR_hetzner_server_type: ${{ vars.HETZNER_SERVER_TYPE }}
+          TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+          TF_VAR_hetzner_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
+        run: terraform -chdir=terraform apply -auto-approve tfplan
+
+      - name: Get Server IP from Terraform Output
+        id: tf_output
+        run: |
+          ip=$(terraform -chdir=terraform output -raw server_ip)
+          echo "SERVER_IP=$ip" >> $GITHUB_ENV
+
+      # --- Build & Push Docker Image ---
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set environment for branch
+        id: set_env
+        run: |
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/intconnect-prod:latest" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_CONTENT=$(cat docker-compose.prod.yml)" >> $GITHUB_ENV
+            echo "ENV_FILE_CONTENT=${{ secrets.ENV_FILE_PRODUCTION }}" >> $GITHUB_ENV
+            echo "ENV_FILE_PATH=./src/.env" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_PATH=./docker-compose.prod.yml" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "staging" ]; then
+            echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/intconnect-stg:latest" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_CONTENT=$(cat docker-compose.staging.yml)" >> $GITHUB_ENV
+            echo "ENV_FILE_CONTENT=${{ secrets.ENV_FILE_STAGING }}" >> $GITHUB_ENV
+            echo "ENV_FILE_PATH=./src/.env.staging" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_PATH=./docker-compose.staging.yml" >> $GITHUB_ENV
+          fi
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/Dockerfile.prod
+          push: true
+          tags: ${{ env.IMAGE_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # --- Deploy to Server ---
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Server
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "mkdir -p /home/ubuntu/intconnect/src"
+
+          # Use a HEREDOC to securely write files on the server
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} << EOF
+            echo "Logging into GitHub Container Registry..."
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+            echo "Writing environment file..."
+            cat <<'EOT' > /home/ubuntu/intconnect/${{ env.ENV_FILE_PATH }}
+          ${{ env.ENV_FILE_CONTENT }}
+          EOT
+
+            echo "Writing docker-compose file..."
+            cat <<'EOT' > /home/ubuntu/intconnect/${{ env.COMPOSE_FILE_PATH }}
+          ${{ env.COMPOSE_FILE_CONTENT }}
+          EOT
+
+            cd /home/ubuntu/intconnect
+
+            echo "Pulling latest image for PHP service..."
+            docker-compose -f ${{ env.COMPOSE_FILE_PATH }} pull php
+
+            echo "Starting application..."
+            docker-compose -f ${{ env.COMPOSE_FILE_PATH }} up -d --remove-orphans
+
+            echo "Deployment successful!"
+          EOF
