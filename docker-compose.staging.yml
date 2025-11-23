@@ -20,9 +20,7 @@ services:
         condition: service_healthy
 
   nginx:
-    build:
-      context: ./docker
-      dockerfile: Dockerfile.nginx
+    image: ghcr.io/${GITHUB_USERNAME}/intconnect-nginx-stg:latest # Use the pre-built image from the CI/CD pipeline
     container_name: intconnect-stg-nginx
     restart: unless-stopped
     ports:

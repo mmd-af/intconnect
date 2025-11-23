@@ -84,32 +84,45 @@ jobs:
             LOCAL_COMPOSE_FILE="docker-compose.prod.yml"
             ENV_FILE_SECRET_NAME="ENV_FILE_PRODUCTION"
             ENV_FILE_PATH="src/.env"
-            IMAGE_REPO="intconnect-prod"
+            IMAGE_REPO_PHP="intconnect-prod"
+            IMAGE_REPO_NGINX="intconnect-nginx-prod"
           elif [ "${{ github.ref_name }}" == "staging" ]; then
             LOCAL_COMPOSE_FILE="docker-compose.staging.yml"
             ENV_FILE_SECRET_NAME="ENV_FILE_STAGING"
             ENV_FILE_PATH="src/.env.staging"
-            IMAGE_REPO="intconnect-stg"
+            IMAGE_REPO_PHP="intconnect-stg"
+            IMAGE_REPO_NGINX="intconnect-nginx-stg"
           fi
 
-          echo "IMAGE_TAG=ghcr.io/${REPO_OWNER}/${IMAGE_REPO}:latest" >> $GITHUB_ENV
+          echo "IMAGE_TAG_PHP=ghcr.io/${REPO_OWNER}/${IMAGE_REPO_PHP}:latest" >> $GITHUB_ENV
+          echo "IMAGE_TAG_NGINX=ghcr.io/${REPO_OWNER}/${IMAGE_REPO_NGINX}:latest" >> $GITHUB_ENV
           echo "ENV_FILE_CONTENT=${{ secrets[env.ENV_FILE_SECRET_NAME] }}" >> $GITHUB_ENV
           echo "ENV_FILE_PATH=${ENV_FILE_PATH}" >> $GITHUB_ENV
           echo "COMPOSE_FILE_PATH_REMOTE=${LOCAL_COMPOSE_FILE}" >> $GITHUB_ENV
 
-          # Read compose file, replace GITHUB_USERNAME placeholder, and store as env var
+          # Read compose file, replace GITHUB_USERNAME placeholder and NGINX_IMAGE_PLACEHOLDER, and store as env var
           COMPOSE_CONTENT=$(cat "${LOCAL_COMPOSE_FILE}")
-          PROCESSED_COMPOSE_CONTENT=$(echo "${COMPOSE_CONTENT}" | sed "s|\${GITHUB_USERNAME}|${REPO_OWNER}|g")
+          PROCESSED_COMPOSE_CONTENT=$(echo "${COMPOSE_CONTENT}" | sed "s|\${GITHUB_USERNAME}|${REPO_OWNER}|g; s|NGINX_IMAGE_PLACEHOLDER|${IMAGE_REPO_NGINX}|g")
           # Use a temporary file to pass processed content, as GH_ENV vars cannot handle newlines easily
           echo "${PROCESSED_COMPOSE_CONTENT}" > /tmp/processed_compose.yml
 
-      - name: Build and push Docker image
+      - name: Build and push PHP Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./docker/Dockerfile.prod
           push: true
-          tags: ${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_TAG_PHP }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push Nginx Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile.nginx
+          push: true
+          tags: ${{ env.IMAGE_TAG_NGINX }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -147,6 +160,9 @@ jobs:
 
             echo "Pulling latest image for PHP service..."
             sudo docker compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull php
+
+            echo "Pulling latest image for Nginx service..."
+            sudo docker compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull nginx
 
             echo "Starting application..."
             sudo docker compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" up -d --remove-orphans
