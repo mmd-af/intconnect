@@ -16,6 +16,10 @@ RUN npm run build
 # --- Stage 2: Final PHP-FPM Application Image (Debian-based) ---
 FROM php:${PHP_VERSION}-fpm AS php_fpm_base
 
+# Re-declare ARGs to use them in this stage
+ARG UID
+ARG GID
+
 # Set non-interactive frontend for package installations
 ARG DEBIAN_FRONTEND=noninteractive
 
