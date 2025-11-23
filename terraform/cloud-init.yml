@@ -11,6 +11,14 @@ packages:
   - containerd.io
   - docker-compose-plugin
 
+users:
+  - name: ubuntu
+    groups: sudo,docker
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ${ssh_public_key} # Inject the key directly via cloud-init config
+
 runcmd:
   # Add Docker's official GPG key
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -21,5 +29,5 @@ runcmd:
   - apt-get install -y docker-ce docker-ce-cli containerd.io
   # Install Docker Compose v2
   - apt-get install -y docker-compose-plugin
-  # Add ubuntu user to docker group
+  # Add ubuntu user to docker group (redundant with 'groups: docker' above, but harmless)
   - usermod -aG docker ubuntu

@@ -44,7 +44,7 @@ resource "hcloud_server" "web_server" {
   ssh_keys    = [hcloud_ssh_key.github_actions_key.id]
 
   # cloud-init script to install Docker and Docker Compose.
-  user_data = file("${path.module}/cloud-init.yml")
+  user_data = templatefile("${path.module}/cloud-init.yml", { ssh_public_key = var.ssh_public_key })
 }
 
 # Create the A record for the production domain.
