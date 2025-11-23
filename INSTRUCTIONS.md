@@ -1,83 +1,80 @@
-# Infrastructure Setup Instructions
+# Infrastructure & Deployment Setup Instructions
 
-This guide provides the necessary steps to configure your environment for the IaC setup.
+This guide provides all the necessary steps to configure your environment for the automated infrastructure and deployment pipeline. Follow these steps in order.
 
-## 1. Prerequisites
+## Step 1: Set Up Terraform Cloud (The "Memory" for your Infrastructure)
 
-- A [Hetzner Cloud](https://www.hetzner.com/cloud) account.
-- A [Cloudflare](https://www.cloudflare.com/) account with your domain (`intconnect.ro`) managed by it.
-- A [GitHub](https://github.com/) account and a repository for your project.
+This is the most important step to ensure your pipeline is stable. We will use the free tier of Terraform Cloud to store the "state" of your infrastructure, which prevents errors on subsequent runs.
 
-## 2. Credentials Setup
+1.  **Sign Up:** Go to [app.terraform.io](https://app.terraform.io) and sign up for a free account.
+2.  **Create an Organization:** After signing up, you'll be prompted to create a new organization. Choose a name that is unique, for example `your-github-username-intconnect`.
+    *   **IMPORTANT:** You must replace `YOUR_ORGANIZATION_NAME` in the `terraform/main.tf` file with the organization name you choose here.
+3.  **Create an API Token:**
+    *   Go to your user settings by clicking your profile icon in the top right, then **Settings**.
+    *   Navigate to **Tokens** on the left menu.
+    *   Click **Create an API token**.
+    *   Give it a description (e.g., "GitHub Actions Token") and click **Create API token**.
+    *   **Immediately copy the generated token.** You will not see it again. This will be used for a GitHub secret.
 
-### 2.1. Cloudflare API Token
+## Step 2: Generate Credentials from Cloud Providers
 
-1.  In your Cloudflare dashboard, go to **My Profile** > **API Tokens**.
-2.  Click **Create Token** and use the **"Create Custom Token"** option.
-3.  **Name your token** (e.g., `github-actions-terraform`).
-4.  Grant it the following **Permissions**:
-    *   `Zone` -> `DNS` -> `Edit`
-    *   `Zone` -> `Zone` -> `Read`
-5.  Under **Zone Resources**, select `Include` > `Specific zone` > `intconnect.ro`. This ensures the token can only affect that domain.
-6.  Click **Continue to summary** and then **Create Token**.
-7.  **Copy the generated token**. You will add this to GitHub secrets in a later step.
+1.  **Hetzner API Token:**
+    *   In your Hetzner Cloud Console, select your project, go to **Security** > **API tokens**.
+    *   Click **Generate API token**, give it a name (`github-actions`), and assign **Read & Write** permissions.
+    *   Copy the generated token.
 
-### 2.2. Hetzner API Token
+2.  **Cloudflare API Token:**
+    *   In your Cloudflare dashboard, go to **My Profile** > **API Tokens** > **Create Token**.
+    *   Use the **Create Custom Token** template.
+    *   Name it `github-actions-intconnect`.
+    *   Grant it these permissions: `Zone` > `DNS` > `Edit`, and `Zone` > `Zone` > `Read`.
+    *   Scope it to your specific zone: `Include` > `Specific zone` > `intconnect.ro`.
+    *   Create the token and copy the value.
 
-1.  In your **Hetzner Cloud Console**, select your project.
-2.  Go to **Security** (the shield icon on the left) and select the **API tokens** tab.
-3.  Click **Generate API token**. Give it a descriptive name (e.g., `github-actions`) and assign it **Read & Write** permissions.
-4.  **Immediately copy the generated token.** You will not be able to see it again.
+## Step 3: Generate Application Secrets
 
-### 2.3. Environment Configuration Files (.env)
+1.  **SSH Key for Server Deployment:**
+    *   In your local terminal, run this command (do not set a passphrase):
+        ```bash
+        ssh-keygen -t ed25519 -C "github-actions@intconnect.ro" -f ./github_actions_key
+        ```
+    *   This creates two files: `github_actions_key` (your private key) and `github_actions_key.pub` (your public key).
 
-For your application to work on the server, it needs its configuration and secrets (like database passwords). You will store these securely in GitHub secrets.
+2.  **Laravel Application Key (`APP_KEY`):**
+    *   In your local terminal, inside your `src` directory, run `php artisan key:generate --show`.
+    *   Copy the generated key (it starts with `base64:...`).
 
-1.  **Generate APP_KEY:** Run `php artisan key:generate --show` in your local Laravel project's terminal. Copy the outputted key. This is a crucial application secret.
+3.  **Create `prod.env` and `stg.env` files:**
+    *   On your local machine, create two files, `prod.env` and `stg.env`.
+    *   Fill them with all necessary values for production and staging, including unique, randomly-generated database passwords and the `APP_KEY` you just created.
+    *   **Do not commit these files to Git.**
 
-2.  **Create a production `.env` file:** On your local machine, make a copy of your `src/.env.example` file and name it `prod.env`. Fill it out with all the values for your **production** environment (e.g., `APP_ENV=production`, `APP_DEBUG=false`, your production database credentials, and paste the `APP_KEY` you just generated).
-3.  **Create a staging `.env` file:** Make another copy and name it `stg.env`. Fill it out with the values for your **staging** environment (using a different `APP_KEY` for better security, or the same if preferred for simplicity in staging).
+## Step 4: Configure GitHub Secrets & Variables
 
-You will now copy the contents of these files into GitHub secrets.
+Navigate to your GitHub repository's **Settings** > **Secrets and variables** > **Actions**.
 
-### 2.4. GitHub Secrets
+### Secrets
 
-Navigate to your GitHub repository's **Settings** > **Secrets and variables** > **Actions** and add the following secrets:
+Add the following secrets. This is where you'll paste all the values you copied in the previous steps.
 
-*   `CLOUDFLARE_API_TOKEN`: The Cloudflare API Token you created.
+*   `TERRAFORM_CLOUD_TOKEN`: The API token you created in Terraform Cloud.
+*   `HETZNER_TOKEN`: The API token from Hetzner.
+*   `CLOUDFLARE_API_TOKEN`: The API token from Cloudflare.
 *   `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare Account ID (find it on the right sidebar of the Cloudflare dashboard).
-*   `HETZNER_TOKEN`: The Hetzner API token you generated.
+*   `SSH_PRIVATE_KEY`: The **entire content** of your `github_actions_key` file.
+*   `SSH_PUBLIC_KEY`: The **entire content** of your `github_actions_key.pub` file.
+*   `ENV_FILE_PRODUCTION`: The **entire content** of your `prod.env` file.
+*   `ENV_FILE_STAGING`: The **entire content** of your `stg.env` file.
 *   `HETZNER_SSH_KEY_NAME`: A name for your SSH key in Hetzner, e.g., `github-actions-key`.
-*   `ENV_FILE_PRODUCTION`: Copy the **entire contents** of your `prod.env` file and paste it here.
-*   `ENV_FILE_STAGING`: Copy the **entire contents** of your `stg.env` file and paste it here.
 
-## 3. SSH Key for Server Deployment
+### Variables
 
-1.  Generate a new SSH key pair:
-    ```bash
-    ssh-keygen -t ed25519 -C "github-actions@intconnect.ro" -f ./github_actions_key
-    ```
-    Do not set a passphrase.
+Add the following variables.
 
-2.  This will create `github_actions_key` (private key) and `github_actions_key.pub` (public key).
+*   `CLOUDFLARE_ZONE_ID`: The Zone ID of your `intconnect.ro` domain from Cloudflare.
+*   `HETZNER_SERVER_TYPE`: The server type you want (e.g., `cpx23`).
 
-3.  Add the **private key** as a GitHub secret:
-    *   **Name**: `SSH_PRIVATE_KEY`
-    *   **Value**: Copy the entire content of the `github_actions_key` file.
+## Step 5: Ready to Go!
 
-4.  Add the **public key** as a GitHub secret:
-    *   **Name**: `SSH_PUBLIC_KEY`
-    *   **Value**: Copy the entire content of the `github_actions_key.pub` file.
+You are all set. Your next push to the `main` or `staging` branch will trigger the workflow, which will now run correctly and reliably every time.
 
-The public key will be automatically added to the Hetzner server by Terraform.
-
-## 4. GitHub Actions Variables
-
-Navigate to your GitHub repository's **Settings** > **Secrets and variables** > **Actions** and go to the **Variables** tab. Add the following:
-
-*   `CLOUDFLARE_ZONE_ID`: The Zone ID of your `intconnect.ro` domain (find it on the domain's overview page in Cloudflare).
-*   `HETZNER_SERVER_TYPE`: The server type to provision (e.g., `cpx11`).
-
-## 5. Ready to Go!
-
-Once the above setup is complete, the GitHub Actions workflow in `.github/workflows/pipeline.yml` will be able to run, provision infrastructure, and deploy your application.

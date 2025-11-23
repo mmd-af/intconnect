@@ -1,5 +1,13 @@
-# Defines the Terraform providers and their configurations.
+# Defines the Terraform providers and adds the Terraform Cloud backend.
 terraform {
+  cloud {
+    organization = "intconnect" # Replace with your Terraform Cloud organization name
+
+    workspaces {
+      name = "intconnect"
+    }
+  }
+
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
@@ -21,6 +29,7 @@ provider "hcloud" {}
 provider "cloudflare" {}
 
 # Create an SSH key in Hetzner Cloud. The public key is read from a variable.
+# With remote state, this will be created once and managed correctly on all future runs.
 resource "hcloud_ssh_key" "github_actions_key" {
   name       = var.hetzner_ssh_key_name
   public_key = var.ssh_public_key
@@ -42,9 +51,9 @@ resource "hcloud_server" "web_server" {
 resource "cloudflare_record" "prod_dns" {
   zone_id = var.cloudflare_zone_id
   name    = "intconnect.ro"
-  value   = hcloud_server.web_server.ipv4_address
+  content = hcloud_server.web_server.ipv4_address
   type    = "A"
-  ttl     = 3600
+  ttl     = 1 # Required for proxied records
   proxied = true
 }
 
@@ -52,8 +61,8 @@ resource "cloudflare_record" "prod_dns" {
 resource "cloudflare_record" "staging_dns" {
   zone_id = var.cloudflare_zone_id
   name    = "stg.intconnect.ro"
-  value   = hcloud_server.web_server.ipv4_address
+  content = hcloud_server.web_server.ipv4_address
   type    = "A"
-  ttl     = 3600
+  ttl     = 1 # Required for proxied records
   proxied = true
 }

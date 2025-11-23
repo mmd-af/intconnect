@@ -23,5 +23,5 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 .composer
-.prod.env
-.staging.env
+./prod.env
+./staging.env

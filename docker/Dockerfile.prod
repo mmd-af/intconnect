@@ -6,49 +6,36 @@ ARG UID=1000
 ARG GID=1000
 
 # --- Stage 1: Build Frontend Assets (Node) ---
-FROM node:20-alpine AS node_modules_builder
+FROM node:20-slim AS node_modules_builder
 WORKDIR /app
 COPY src/package.json src/package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 COPY src/ .
 RUN npm run build
 
-# --- Stage 2: Install Composer Dependencies ---
-FROM composer:2 AS composer_vendor_builder
-WORKDIR /app
-COPY src/composer.json src/composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
-COPY src/ .
-
-# --- Stage 3: Final PHP-FPM Application Image ---
-FROM php:${PHP_VERSION}-fpm-alpine AS php_fpm_base
+# --- Stage 2: Final PHP-FPM Application Image (Debian-based) ---
+FROM php:${PHP_VERSION}-fpm AS php_fpm_base
 
 # Set non-interactive frontend for package installations
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Install common system dependencies and PHP extensions
-RUN apk add --no-cache \
+# Install system dependencies required for PHP extensions
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     zip \
     unzip \
-    libpq \
-    libpng \
-    libjpeg-turbo \
-    libwebp \
-    libxml2 \
-    icu-libs \
-    freetype \
-    freetype-dev \
     libpng-dev \
-    libjpeg-turbo-dev \
+    libjpeg-dev \
     libwebp-dev \
+    libfreetype6-dev \
+    libonig-dev \
     libxml2-dev \
-    icu-dev \
-    # Install Supervisord for process management (if needed, otherwise remove)
-    supervisor \
-    # Clean up apk cache
-    && rm -rf /var/cache/apk/*
+    libzip-dev \
+    libicu-dev \
+    # Other utilities
+    supervisor
 
+# Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) \
     bcmath \
@@ -61,18 +48,26 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     intl \
     opcache
 
-# Get latest Composer (already handled in composer_vendor_builder, but good for local dev if not using multi-stage)
+# Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy application code and dependencies
+# Set working directory
 WORKDIR /var/www
-COPY --from=composer_vendor_builder /app/vendor /var/www/vendor
-COPY --from=node_modules_builder /app/public/build /var/www/public/build # Copy compiled assets
+
+# Create a non-root user to run the application (using Debian commands)
+RUN groupadd -g ${GID} intconnect
+RUN useradd -u ${UID} -g intconnect -G www-data -m -d /var/www intconnect
+
+# Copy composer files and install dependencies
+# This is done in a separate layer to leverage Docker cache
+COPY src/composer.json src/composer.lock ./
+RUN composer install --no-dev --no-scripts --optimize-autoloader
+
+# Copy the rest of the application code
 COPY src/ .
 
-# Create a non-root user to run the application
-RUN groupadd -g ${GID} --non-unique intconnect && \
-    useradd -u ${UID} -g intconnect -G www-data -m -d /var/www intconnect
+# Copy compiled frontend assets from the node builder stage
+COPY --from=node_modules_builder /app/public/build /var/www/public/build
 
 # Copy and make entrypoint script executable
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh

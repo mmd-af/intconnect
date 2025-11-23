@@ -22,6 +22,11 @@ jobs:
           terraform_version: 1.5.0
 
       # --- Terraform Infrastructure ---
+      - name: Configure Terraform Cloud Credentials
+        run: |
+          mkdir -p ~/.terraform.d/
+          echo '{"credentials":{"app.terraform.io":{"token":"${{ secrets.TERRAFORM_CLOUD_TOKEN }}"}}}' > ~/.terraform.d/credentials.tfrc.json
+
       - name: Terraform Init
         id: init
         env:
@@ -38,7 +43,7 @@ jobs:
           TF_VAR_hetzner_server_type: ${{ vars.HETZNER_SERVER_TYPE }}
           TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
           TF_VAR_hetzner_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
-        run: terraform -chdir=terraform plan -out=tfplan
+        run: terraform -chdir=terraform plan
 
       - name: Terraform Apply
         id: apply
@@ -50,7 +55,7 @@ jobs:
           TF_VAR_hetzner_server_type: ${{ vars.HETZNER_SERVER_TYPE }}
           TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
           TF_VAR_hetzner_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
-        run: terraform -chdir=terraform apply -auto-approve tfplan
+        run: terraform -chdir=terraform apply -auto-approve
 
       - name: Get Server IP from Terraform Output
         id: tf_output
@@ -74,16 +79,16 @@ jobs:
         run: |
           if [ "${{ github.ref_name }}" == "main" ]; then
             echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/intconnect-prod:latest" >> $GITHUB_ENV
-            echo "COMPOSE_FILE_CONTENT=$(cat docker-compose.prod.yml)" >> $GITHUB_ENV
             echo "ENV_FILE_CONTENT=${{ secrets.ENV_FILE_PRODUCTION }}" >> $GITHUB_ENV
-            echo "ENV_FILE_PATH=./src/.env" >> $GITHUB_ENV
-            echo "COMPOSE_FILE_PATH=./docker-compose.prod.yml" >> $GITHUB_ENV
+            echo "ENV_FILE_PATH=src/.env" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_PATH_LOCAL=docker-compose.prod.yml" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_PATH_REMOTE=docker-compose.prod.yml" >> $GITHUB_ENV
           elif [ "${{ github.ref_name }}" == "staging" ]; then
             echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/intconnect-stg:latest" >> $GITHUB_ENV
-            echo "COMPOSE_FILE_CONTENT=$(cat docker-compose.staging.yml)" >> $GITHUB_ENV
             echo "ENV_FILE_CONTENT=${{ secrets.ENV_FILE_STAGING }}" >> $GITHUB_ENV
-            echo "ENV_FILE_PATH=./src/.env.staging" >> $GITHUB_ENV
-            echo "COMPOSE_FILE_PATH=./docker-compose.staging.yml" >> $GITHUB_ENV
+            echo "ENV_FILE_PATH=src/.env.staging" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_PATH_LOCAL=docker-compose.staging.yml" >> $GITHUB_ENV
+            echo "COMPOSE_FILE_PATH_REMOTE=docker-compose.staging.yml" >> $GITHUB_ENV
           fi
 
       - name: Build and push Docker image
@@ -104,30 +109,31 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "mkdir -p /home/ubuntu/intconnect/src"
+          APP_DIR="/home/ubuntu/intconnect"
+          echo "Deploying to ${APP_DIR} on server ${{ env.SERVER_IP }}"
 
-          # Use a HEREDOC to securely write files on the server
+          # 1. Create directories
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "mkdir -p ${APP_DIR}/src"
+
+          # 2. Write the .env file securely
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "echo '${{ env.ENV_FILE_CONTENT }}' > ${APP_DIR}/${{ env.ENV_FILE_PATH }}"
+
+          # 3. Write the docker-compose file securely using stdin redirection
+          cat "${{ env.COMPOSE_FILE_PATH_LOCAL }}" | ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "cat > ${APP_DIR}/${{ env.COMPOSE_FILE_PATH_REMOTE }}"
+
+          # 4. Login to registry, pull new image, and restart services
           ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} << EOF
+            set -e
             echo "Logging into GitHub Container Registry..."
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-            echo "Writing environment file..."
-            cat <<'EOT' > /home/ubuntu/intconnect/${{ env.ENV_FILE_PATH }}
-          ${{ env.ENV_FILE_CONTENT }}
-          EOT
-
-            echo "Writing docker-compose file..."
-            cat <<'EOT' > /home/ubuntu/intconnect/${{ env.COMPOSE_FILE_PATH }}
-          ${{ env.COMPOSE_FILE_CONTENT }}
-          EOT
-
-            cd /home/ubuntu/intconnect
+            cd ${APP_DIR}
 
             echo "Pulling latest image for PHP service..."
-            docker-compose -f ${{ env.COMPOSE_FILE_PATH }} pull php
+            docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull php
 
             echo "Starting application..."
-            docker-compose -f ${{ env.COMPOSE_FILE_PATH }} up -d --remove-orphans
+            docker-compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" up -d --remove-orphans
 
             echo "Deployment successful!"
           EOF
