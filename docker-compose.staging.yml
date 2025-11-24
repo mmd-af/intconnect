@@ -1,18 +1,12 @@
-# docker-compose.staging.yml
-
-
 services:
   php:
-    build:
-      context: . # Build context is the project root
-      dockerfile: ./docker/Dockerfile.prod
-    image: ghcr.io/${GITHUB_USERNAME}/intconnect-stg:latest # Use the pre-built image from the CI/CD pipeline
+    image: ghcr.io/${GITHUB_USERNAME}/intconnect-stg:latest
     container_name: intconnect-stg-php
     restart: unless-stopped
     env_file:
-      - ./src/.env.staging # Load environment variables from the .env.staging file
+      - ./src/.env.staging
     volumes:
-      - ./src/storage:/var/www/storage # Persistent storage for logs, sessions, etc.
+      - ./src/storage:/var/www/storage
     networks:
       - intconnect-stg
     depends_on:
@@ -20,11 +14,11 @@ services:
         condition: service_healthy
 
   nginx:
-    image: ghcr.io/${GITHUB_USERNAME}/intconnect-nginx-stg:latest # Use the pre-built image from the CI/CD pipeline
+    image: ghcr.io/${GITHUB_USERNAME}/intconnect-nginx-stg:latest
     container_name: intconnect-stg-nginx
     restart: unless-stopped
     ports:
-      - "8080:80" # Expose staging on port 8080
+      - "8080:80"
     networks:
       - intconnect-stg
     depends_on:
@@ -34,16 +28,24 @@ services:
     image: mariadb:11.0
     container_name: intconnect-stg-db
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USERNAME_STG} -p${DB_PASSWORD_STG}"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
     env_file:
-      - ./src/.env.staging # Load database credentials from the .env.staging file
+      - ./src/.env.staging
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD_STG}
+      MYSQL_DATABASE: ${DB_DATABASE_STG}
+      MYSQL_USER: ${DB_USERNAME_STG}
+      MYSQL_PASSWORD: ${DB_PASSWORD_STG}
+
     volumes:
       - stg-database:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USERNAME_STG} -p${DB_PASSWORD_STG} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
     networks:
       - intconnect-stg
 
