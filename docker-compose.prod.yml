@@ -9,7 +9,7 @@ services:
     environment:
       DB_HOST: "database"
     volumes:
-      - ./src/storage:/var/www/storage
+      - prod-storage:/var/www/storage
     networks:
       - intconnect-prod
     depends_on:
@@ -52,3 +52,5 @@ networks:
 volumes:
   prod-database:
     name: intconnect-prod-db-data
+  prod-storage:
+    name: intconnect-prod-storage-data

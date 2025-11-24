@@ -6,7 +6,7 @@ services:
     env_file:
       - ./src/.env.staging
     volumes:
-      - ./src/storage:/var/www/storage
+      - stg-storage:/var/www/storage
     networks:
       - intconnect-stg
     depends_on:
@@ -53,3 +53,5 @@ networks:
 volumes:
   stg-database:
     name: intconnect-stg-db-data
+  stg-storage:
+    name: intconnect-stg-storage-data
