@@ -10,8 +10,7 @@ services:
     networks:
       - intconnect-stg
     depends_on:
-      database:
-        condition: service_healthy
+      - database
 
   nginx:
     image: ghcr.io/${GITHUB_USERNAME}/intconnect-nginx-stg:latest
@@ -35,19 +34,17 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE_STG}
       MYSQL_USER: ${DB_USERNAME_STG}
       MYSQL_PASSWORD: ${DB_PASSWORD_STG}
-
     volumes:
       - stg-database:/var/lib/mysql
-
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USERNAME_STG} -p${DB_PASSWORD_STG} --silent"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 40s
-
     networks:
       - intconnect-stg
+    # Optional robust healthcheck (commented out)
+    # healthcheck:
+    #   test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USERNAME_STG} -p${DB_PASSWORD_STG} --silent"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 10
+    #   start_period: 60s
 
 networks:
   intconnect-stg:

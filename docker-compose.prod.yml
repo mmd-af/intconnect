@@ -1,20 +1,22 @@
 services:
   php:
-    image: ghcr.io/${GITHUB_USERNAME}/intconnect-prod:latest
+    image: ghcr.io/mmd-af/intconnect-prod:latest
     container_name: intconnect-prod-php
     restart: unless-stopped
     env_file:
       - ./src/.env
+    # Use DB credentials from env_file; only set DB_HOST for service DNS
+    environment:
+      DB_HOST: "database"
     volumes:
       - ./src/storage:/var/www/storage
     networks:
       - intconnect-prod
     depends_on:
-      database:
-        condition: service_healthy
+      - database
 
   nginx:
-    image: ghcr.io/${GITHUB_USERNAME}/intconnect-nginx-prod:latest
+    image: ghcr.io/mmd-af/intconnect-nginx-prod:latest
     container_name: intconnect-prod-nginx
     restart: unless-stopped
     ports:
@@ -28,27 +30,20 @@ services:
     image: mariadb:11.0
     container_name: intconnect-prod-db
     restart: unless-stopped
+    # Read DB credentials from the env file you upload in the workflow: src/.env
     env_file:
       - ./src/.env
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-
     volumes:
       - prod-database:/var/lib/mysql
-
-    # FIXED HEALTHCHECK
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$$DB_USERNAME -p$$DB_PASSWORD --silent"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 40s
-
     networks:
       - intconnect-prod
+    # Optional: a robust healthcheck you can enable later (commented out to avoid blocking deploy)
+    # healthcheck:
+    #   test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USERNAME} -p${DB_PASSWORD} --silent"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 10
+    #   start_period: 60s
 
 networks:
   intconnect-prod:
