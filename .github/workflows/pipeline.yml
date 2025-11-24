@@ -122,19 +122,24 @@ jobs:
 
           if [ "${{ github.ref_name }}" = "main" ]; then
             cat << 'EOF' > /tmp/envfile
-            ${{ secrets.ENV_FILE_PRODUCTION }}
+          ${{ secrets.ENV_FILE_PRODUCTION }}
           EOF
           else
             cat << 'EOF' > /tmp/envfile
-            ${{ secrets.ENV_FILE_STAGING }}
+          ${{ secrets.ENV_FILE_STAGING }}
           EOF
           fi
 
           $SSH "mkdir -p $APP/src"
 
+          # write env both to src/.env (for app) and root .env (for docker-compose variable expansion)
           $SCP /tmp/envfile $SERVER:$APP/${{ env.REMOTE_ENV_PATH }}
+          $SCP /tmp/envfile $SERVER:$APP/.env
+
+          # upload compose file
           $SCP /tmp/compose.yml $SERVER:$APP/${{ env.COMPOSE_FILE }}
 
+          # deploy
           $SSH << EOF
             set -e
             cd $APP
