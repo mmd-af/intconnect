@@ -122,12 +122,12 @@ jobs:
 
           if [ "${{ github.ref_name }}" = "main" ]; then
             cat << 'EOF' > /tmp/envfile
-${{ secrets.ENV_FILE_PRODUCTION }}
-EOF
+            ${{ secrets.ENV_FILE_PRODUCTION }}
+          EOF
           else
             cat << 'EOF' > /tmp/envfile
-${{ secrets.ENV_FILE_STAGING }}
-EOF
+            ${{ secrets.ENV_FILE_STAGING }}
+          EOF
           fi
 
           $SSH "mkdir -p $APP/src"
@@ -141,6 +141,6 @@ EOF
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
             sudo docker compose -f "${{ env.COMPOSE_FILE }}" pull
             sudo docker compose -f "${{ env.COMPOSE_FILE }}" up -d --remove-orphans
-EOF
+          EOF
 
           rm -f ~/.ssh/key /tmp/envfile
