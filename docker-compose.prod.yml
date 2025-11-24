@@ -41,7 +41,7 @@ services:
 
     # FIXED HEALTHCHECK
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USERNAME} -p${DB_PASSWORD} --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$$DB_USERNAME -p$$DB_PASSWORD --silent"]
       interval: 10s
       timeout: 5s
       retries: 5
