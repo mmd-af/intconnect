@@ -124,17 +124,9 @@ jobs:
 
 
           if [ "${{ github.ref_name }}" = "main" ]; then
-            cat << 'EOF' > /tmp/envfile
-          ${{ secrets.ENV_FILE_PRODUCTION }}
-
-          EOF
-
+            echo "${{ secrets.ENV_FILE_PRODUCTION }}" | sed -e 's/\$/\$\$/g' > /tmp/envfile
           else
-            cat << 'EOF' > /tmp/envfile
-          ${{ secrets.ENV_FILE_STAGING }}
-
-          EOF
-
+            echo "${{ secrets.ENV_FILE_STAGING }}" | sed -e 's/\$/\$\$/g' > /tmp/envfile
           fi
 
 
