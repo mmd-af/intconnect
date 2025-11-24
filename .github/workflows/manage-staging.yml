@@ -1,22 +1,19 @@
 name: Manage Staging Environment
 
 on:
-  # This allows the workflow to be run manually from the Actions tab
   workflow_dispatch:
     inputs:
       action:
-        description: 'Choose whether to start or stop the staging environment'
+        description: 'Start or stop staging environment'
         required: true
         type: choice
         options:
-        - stop
-        - start
-        default: 'stop'
+          - start
+          - stop
 
 jobs:
   manage-staging:
     runs-on: ubuntu-latest
-    name: ${{ github.event.inputs.action }} staging environment
 
     steps:
       - name: Checkout code
@@ -27,14 +24,12 @@ jobs:
         with:
           terraform_version: 1.5.0
 
-      # The next two steps get the server's IP address from your Terraform state
-      # This ensures we always have the correct address without saving it anywhere else.
       - name: Terraform Init
         env:
           HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
         run: terraform -chdir=terraform init -input=false
 
-      - name: Get Server IP from Terraform Output
+      - name: Get Server IP
         id: tf_output
         env:
           HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
@@ -46,19 +41,20 @@ jobs:
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          
-      - name: Execute command on server
+
+      - name: Start/Stop Staging
         run: |
-          # IMPORTANT: You must replace this path with the actual path to your project on the server.
-          PROJECT_PATH="/path/to/your/project/on/server"
+          PROJECT_PATH="/home/ubuntu/intconnect"
 
           if [ "${{ github.event.inputs.action }}" == "start" ]; then
-            echo "Starting staging environment on server ${{ env.SERVER_IP }}..."
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "docker-compose -f ${PROJECT_PATH}/server_setup/docker-compose.staging.yml up -d"
-            echo "Staging environment started."
+            echo "Starting staging..."
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} \
+              "sudo docker compose -f ${PROJECT_PATH}/docker-compose.staging.yml up -d"
+            echo "Staging started."
 
-          elif [ "${{ github.event.inputs.action }}" == "stop" ]; then
-            echo "Stopping staging environment on server ${{ env.SERVER_IP }}..."
-            ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} "docker-compose -f ${PROJECT_PATH}/server_setup/docker-compose.staging.yml down"
-            echo "Staging environment stopped."
+          else
+            echo "Stopping staging..."
+            ssh -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }} \
+              "sudo docker compose -f ${PROJECT_PATH}/docker-compose.staging.yml down"
+            echo "Staging stopped."
           fi
