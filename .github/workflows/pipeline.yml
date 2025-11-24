@@ -14,21 +14,26 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: hashicorp/setup-terraform@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.0
 
-      - run: |
+      - name: Configure Terraform Cloud credentials
+        run: |
           mkdir -p ~/.terraform.d/
           echo '{"credentials":{"app.terraform.io":{"token":"${{ secrets.TERRAFORM_CLOUD_TOKEN }}"}}}' > ~/.terraform.d/credentials.tfrc.json
 
-      - env:
+      - name: Terraform init
+        env:
           HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
         run: terraform -chdir=terraform init
 
-      - env:
+      - name: Terraform plan
+        env:
           HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
@@ -38,7 +43,8 @@ jobs:
           TF_VAR_hetzner_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
         run: terraform -chdir=terraform plan
 
-      - env:
+      - name: Terraform apply
+        env:
           HCLOUD_TOKEN: ${{ secrets.HETZNER_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
@@ -48,79 +54,93 @@ jobs:
           TF_VAR_hetzner_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
         run: terraform -chdir=terraform apply -auto-approve
 
-      - run: |
+      - name: Get server IP
+        run: |
           ip=$(terraform -chdir=terraform output -raw server_ip)
           echo "SERVER_IP=$ip" >> $GITHUB_ENV
 
-      - uses: docker/setup-buildx-action@v3
+      - name: Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - uses: docker/login-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: |
+      - name: Set deployment variables
+        run: |
           OWNER="${{ github.repository_owner }}"
 
           if [ "${{ github.ref_name }}" = "main" ]; then
             COMPOSE_FILE="docker-compose.prod.yml"
-            ENV_SECRET="ENV_FILE_PRODUCTION"
-            ENV_PATH="src/.env"
+            REMOTE_ENV_PATH="src/.env"
             PHP_REPO="intconnect-prod"
             NGINX_REPO="intconnect-nginx-prod"
           else
             COMPOSE_FILE="docker-compose.staging.yml"
-            ENV_SECRET="ENV_FILE_STAGING"
-            ENV_PATH="src/.env.staging"
+            REMOTE_ENV_PATH="src/.env.staging"
             PHP_REPO="intconnect-stg"
             NGINX_REPO="intconnect-nginx-stg"
           fi
 
-          echo "ENV_FILE_PATH=$ENV_PATH" >> $GITHUB_ENV
-          echo "ENV_FILE_SECRET_NAME=$ENV_SECRET" >> $GITHUB_ENV
-          echo "COMPOSE_FILE_PATH_REMOTE=$COMPOSE_FILE" >> $GITHUB_ENV
+          echo "COMPOSE_FILE=$COMPOSE_FILE" >> $GITHUB_ENV
+          echo "REMOTE_ENV_PATH=$REMOTE_ENV_PATH" >> $GITHUB_ENV
           echo "PHP_IMAGE=ghcr.io/${OWNER}/${PHP_REPO}:latest" >> $GITHUB_ENV
           echo "NGINX_IMAGE=ghcr.io/${OWNER}/${NGINX_REPO}:latest" >> $GITHUB_ENV
 
-          CONTENT=$(cat "$COMPOSE_FILE" | sed "s|\${GITHUB_USERNAME}|$OWNER|g")
+          CONTENT=$(sed "s|\${GITHUB_USERNAME}|${OWNER}|g" "$COMPOSE_FILE")
           echo "$CONTENT" > /tmp/compose.yml
 
-      - uses: docker/build-push-action@v5
+      - name: Build & push PHP image
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./docker/Dockerfile.prod
           push: true
           tags: ${{ env.PHP_IMAGE }}
 
-      - uses: docker/build-push-action@v5
+      - name: Build & push Nginx image
+        uses: docker/build-push-action@v5
         with:
           context: ./docker
           file: ./docker/Dockerfile.nginx
           push: true
           tags: ${{ env.NGINX_IMAGE }}
 
-      - run: |
+      - name: Deploy to server
+        run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/key
           chmod 600 ~/.ssh/key
 
-          SSH="ssh -i ~/.ssh/key -o StrictHostKeyChecking=no ubuntu@${{ env.SERVER_IP }}"
           APP="/home/ubuntu/intconnect"
+          SERVER="ubuntu@${{ env.SERVER_IP }}"
+          SSH="ssh -i ~/.ssh/key -o StrictHostKeyChecking=no $SERVER"
+          SCP="scp -i ~/.ssh/key -o StrictHostKeyChecking=no"
+
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            cat << 'EOF' > /tmp/envfile
+${{ secrets.ENV_FILE_PRODUCTION }}
+EOF
+          else
+            cat << 'EOF' > /tmp/envfile
+${{ secrets.ENV_FILE_STAGING }}
+EOF
+          fi
 
           $SSH "mkdir -p $APP/src"
 
-          $SSH "cat > $APP/${{ env.ENV_FILE_PATH }}" << 'EOF'
-          ${{ secrets[env.ENV_FILE_SECRET_NAME] }}
-          EOF
-
-          cat /tmp/compose.yml | $SSH "cat > $APP/${{ env.COMPOSE_FILE_PATH_REMOTE }}"
+          $SCP /tmp/envfile $SERVER:$APP/${{ env.REMOTE_ENV_PATH }}
+          $SCP /tmp/compose.yml $SERVER:$APP/${{ env.COMPOSE_FILE }}
 
           $SSH << EOF
+            set -e
             cd $APP
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-            sudo docker compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" pull
-            sudo docker compose -f "${{ env.COMPOSE_FILE_PATH_REMOTE }}" up -d --remove-orphans
-            EOF
+            sudo docker compose -f "${{ env.COMPOSE_FILE }}" pull
+            sudo docker compose -f "${{ env.COMPOSE_FILE }}" up -d --remove-orphans
+EOF
 
-          rm ~/.ssh/key
+          rm -f ~/.ssh/key /tmp/envfile
