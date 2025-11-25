@@ -8,7 +8,7 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 5.0"
+      version = "~> 5"
     }
   }
 }
@@ -23,26 +23,20 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
 
-# --- Cloudflare zone (intconnect.ro) ---
-
-data "cloudflare_zone" "intconnect" {
-  name = var.domain
-}
-
-# --- Hetzner SSH key (uses your SSH_PUBLIC_KEY secret) ---
+# --- Hetzner SSH key ---
 
 resource "hcloud_ssh_key" "main" {
   name       = var.hcloud_ssh_key_name
   public_key = var.ssh_public_key
 }
 
-# --- Hetzner server (Docker host for prod + staging) ---
+# --- Hetzner server ---
 
 resource "hcloud_server" "intconnect" {
   name        = "intconnect-app"
-  server_type = var.hcloud_server_type      # e.g. cx21
-  image       = var.hcloud_image            # using Hetzner Docker CE image
-  location    = var.hcloud_location         # e.g. fsn1
+  server_type = var.hcloud_server_type
+  image       = var.hcloud_image
+  location    = var.hcloud_location
   ssh_keys    = [hcloud_ssh_key.main.id]
 
   labels = {
@@ -50,7 +44,6 @@ resource "hcloud_server" "intconnect" {
     env     = "prod-staging"
   }
 
-  # Optional: basic firewall with ufw; Docker CE image already has docker installed
   user_data = <<-EOF
   #cloud-config
   packages:
@@ -65,24 +58,29 @@ resource "hcloud_server" "intconnect" {
 
 # --- Cloudflare DNS: intconnect.ro → server IP ---
 
-resource "cloudflare_record" "root" {
-  zone_id         = data.cloudflare_zone.intconnect.id
-  name            = "@"
-  type            = "A"
-  value           = hcloud_server.intconnect.ipv4_address
-  ttl             = 300
-  proxied         = true
-  allow_overwrite = true
+resource "cloudflare_dns_record" "root" {
+  zone_id = var.cloudflare_zone_id
+  name    = "@"
+  type    = "A"
+  content = hcloud_server.intconnect.ipv4_address
+  ttl     = 300
+  proxied = true
 }
 
-# --- Cloudflare DNS: stg.intconnect.ro → server IP ---
+# --- Cloudflare DNS: stg.intconnect.ro → same server ---
 
-resource "cloudflare_record" "stg" {
-  zone_id         = data.cloudflare_zone.intconnect.id
-  name            = "stg"
-  type            = "A"
-  value           = hcloud_server.intconnect.ipv4_address
-  ttl             = 300
-  proxied         = true
-  allow_overwrite = true
+resource "cloudflare_dns_record" "stg" {
+  zone_id = var.cloudflare_zone_id
+  name    = "stg"
+  type    = "A"
+  content = hcloud_server.intconnect.ipv4_address
+  ttl     = 300
+  proxied = true
+}
+
+# --- Outputs ---
+
+output "server_ipv4_address" {
+  description = "Public IPv4 of the app server"
+  value       = hcloud_server.intconnect.ipv4_address
 }
