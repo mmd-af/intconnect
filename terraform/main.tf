@@ -13,8 +13,6 @@ terraform {
   }
 }
 
-# --- Providers ---
-
 provider "hcloud" {
   token = var.hcloud_token
 }
@@ -23,14 +21,10 @@ provider "cloudflare" {
   api_token = var.cloudflare_api_token
 }
 
-# --- Hetzner SSH key ---
-
 resource "hcloud_ssh_key" "main" {
   name       = var.hcloud_ssh_key_name
   public_key = var.ssh_public_key
 }
-
-# --- Hetzner server ---
 
 resource "hcloud_server" "intconnect" {
   name        = "intconnect-app"
@@ -56,8 +50,6 @@ resource "hcloud_server" "intconnect" {
   EOF
 }
 
-# --- Cloudflare DNS: intconnect.ro → server IP ---
-
 resource "cloudflare_dns_record" "root" {
   zone_id = var.cloudflare_zone_id
   name    = "@"
@@ -66,8 +58,6 @@ resource "cloudflare_dns_record" "root" {
   ttl     = 300
   proxied = true
 }
-
-# --- Cloudflare DNS: stg.intconnect.ro → same server ---
 
 resource "cloudflare_dns_record" "stg" {
   zone_id = var.cloudflare_zone_id
