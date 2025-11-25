@@ -1,0 +1,48 @@
+name: Infrastructure
+
+on:
+  # runs when you change IaC files
+  push:
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/infra.yml'
+  # allows manual run from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+
+    env:
+      TF_VAR_hcloud_token: ${{ secrets.HETZNER_TOKEN }}
+      TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+      TF_VAR_hcloud_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TF_VAR_domain: intconnect.ro
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform plan
+        run: terraform plan
+
+      - name: Terraform apply
+        # if you want: only auto-apply on main
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve
+
+      - name: Export server IP
+        id: tf_outputs
+        run: echo "server_ip=$(terraform output -raw server_ipv4_address)" >> "$GITHUB_OUTPUT"
