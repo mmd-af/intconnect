@@ -1,4 +1,12 @@
 terraform {
+  cloud {
+    organization = "intconnect"
+
+    workspaces {
+      name = "intconnect"
+    }
+  }
+
   required_version = ">= 1.5.0"
 
   required_providers {
