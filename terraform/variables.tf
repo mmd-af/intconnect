@@ -1,26 +1,38 @@
-variable "cloudflare_zone_id" {
-  description = "The Zone ID of the domain in Cloudflare."
-  type        = string
+variable "hcloud_token" {
+  type      = string
+  sensitive = true
 }
 
-variable "cloudflare_account_id" {
-  description = "The Account ID for Cloudflare."
-  type        = string
-}
-
-variable "hetzner_server_type" {
-  description = "The type of server to create on Hetzner."
-  type        = string
-  default     = "cpx11"
+variable "hcloud_ssh_key_name" {
+  type = string
 }
 
 variable "ssh_public_key" {
-  description = "The public SSH key to add to the server."
-  type        = string
-  sensitive   = true
+  type      = string
+  sensitive = true
 }
 
-variable "hetzner_ssh_key_name" {
-  description = "The name for the SSH key in the Hetzner Cloud project."
-  type        = string
+variable "cloudflare_api_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "domain" {
+  type    = string
+  default = "intconnect.ro"
+}
+
+variable "hcloud_location" {
+  type    = string
+  default = "fsn1"
+}
+
+variable "hcloud_server_type" {
+  type    = string
+  default = "cx23"
+}
+
+variable "hcloud_image" {
+  type    = string
+  default = "docker-ce"
 }

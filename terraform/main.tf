@@ -1,68 +1,88 @@
-# Defines the Terraform providers and adds the Terraform Cloud backend.
 terraform {
-  cloud {
-    organization = "intconnect" # Replace with your Terraform Cloud organization name
-
-    workspaces {
-      name = "intconnect"
-    }
-  }
+  required_version = ">= 1.5.0"
 
   required_providers {
     hcloud = {
       source  = "hetznercloud/hcloud"
-      version = "~> 1.44"
+      version = "~> 1.47"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.25"
+      version = "~> 5.0"
     }
   }
 }
 
-# Configure the Hetzner Cloud provider.
-# The token is passed via environment variable HCLOUD_TOKEN in the CI/CD pipeline.
-provider "hcloud" {}
+# --- Providers ---
 
-# Configure the Cloudflare provider.
-# The API token is passed via environment variable CLOUDFLARE_API_TOKEN in the CI/CD pipeline.
-provider "cloudflare" {}
+provider "hcloud" {
+  token = var.hcloud_token
+}
 
-# Create an SSH key in Hetzner Cloud. The public key is read from a variable.
-# With remote state, this will be created once and managed correctly on all future runs.
-resource "hcloud_ssh_key" "github_actions_key" {
-  name       = var.hetzner_ssh_key_name
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
+
+# --- Cloudflare zone (intconnect.ro) ---
+
+data "cloudflare_zone" "intconnect" {
+  name = var.domain
+}
+
+# --- Hetzner SSH key (uses your SSH_PUBLIC_KEY secret) ---
+
+resource "hcloud_ssh_key" "main" {
+  name       = var.hcloud_ssh_key_name
   public_key = var.ssh_public_key
 }
 
-# Provision a Hetzner Cloud server.
-resource "hcloud_server" "web_server" {
-  name        = "intconnect-server"
-  server_type = var.hetzner_server_type
-  image       = "ubuntu-22.04"
-  location    = "nbg1"
-  ssh_keys    = [hcloud_ssh_key.github_actions_key.id]
+# --- Hetzner server (Docker host for prod + staging) ---
 
-  # cloud-init script to install Docker and Docker Compose.
-  user_data = templatefile("${path.module}/cloud-init.yml", { ssh_public_key = var.ssh_public_key })
+resource "hcloud_server" "intconnect" {
+  name        = "intconnect-app"
+  server_type = var.hcloud_server_type      # e.g. cx21
+  image       = var.hcloud_image            # using Hetzner Docker CE image
+  location    = var.hcloud_location         # e.g. fsn1
+  ssh_keys    = [hcloud_ssh_key.main.id]
+
+  labels = {
+    project = "intconnect"
+    env     = "prod-staging"
+  }
+
+  # Optional: basic firewall with ufw; Docker CE image already has docker installed
+  user_data = <<-EOF
+  #cloud-config
+  packages:
+    - git
+  runcmd:
+    - ufw allow ssh
+    - ufw allow http
+    - ufw allow https
+    - ufw --force enable
+  EOF
 }
 
-# Create the A record for the production domain.
-resource "cloudflare_record" "prod_dns" {
-  zone_id = var.cloudflare_zone_id
-  name    = "intconnect.ro"
-  content = hcloud_server.web_server.ipv4_address
-  type    = "A"
-  ttl     = 1 # Required for proxied records
-  proxied = true
+# --- Cloudflare DNS: intconnect.ro → server IP ---
+
+resource "cloudflare_record" "root" {
+  zone_id         = data.cloudflare_zone.intconnect.id
+  name            = "@"
+  type            = "A"
+  value           = hcloud_server.intconnect.ipv4_address
+  ttl             = 300
+  proxied         = true
+  allow_overwrite = true
 }
 
-# Create the A record for the staging domain.
-resource "cloudflare_record" "staging_dns" {
-  zone_id = var.cloudflare_zone_id
-  name    = "stg.intconnect.ro"
-  content = hcloud_server.web_server.ipv4_address
-  type    = "A"
-  ttl     = 1 # Required for proxied records
-  proxied = true
+# --- Cloudflare DNS: stg.intconnect.ro → server IP ---
+
+resource "cloudflare_record" "stg" {
+  zone_id         = data.cloudflare_zone.intconnect.id
+  name            = "stg"
+  type            = "A"
+  value           = hcloud_server.intconnect.ipv4_address
+  ttl             = 300
+  proxied         = true
+  allow_overwrite = true
 }

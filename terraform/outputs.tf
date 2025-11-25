@@ -1,4 +1,9 @@
-output "server_ip" {
-  description = "The public IPv4 address of the web server."
-  value       = hcloud_server.web_server.ipv4_address
+output "server_ipv4_address" {
+  description = "Public IPv4 of the app server"
+  value       = hcloud_server.intconnect.ipv4_address
+}
+
+output "cloudflare_zone_id" {
+  description = "Cloudflare zone ID for intconnect.ro"
+  value       = data.cloudflare_zone.intconnect.id
 }
