@@ -62,16 +62,16 @@ resource "cloudflare_record" "root" {
   zone_id = var.cloudflare_zone_id
   name    = "@"
   type    = "A"
-  content = hcloud_server.intconnect.ipv4_address
+  value   = hcloud_server.intconnect.ipv4_address
   ttl     = 300
   proxied = true
 }
 
-resource "cloudflare_dns_record" "stg" {
+resource "cloudflare_record" "stg" {
   zone_id = var.cloudflare_zone_id
   name    = "stg"
   type    = "A"
-  content = hcloud_server.intconnect.ipv4_address
+  value   = hcloud_server.intconnect.ipv4_address
   ttl     = 300
   proxied = true
 }
