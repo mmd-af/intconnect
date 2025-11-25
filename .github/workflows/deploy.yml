@@ -10,20 +10,45 @@ jobs:
   deploy-production:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}
+      TF_VAR_hcloud_token: ${{ secrets.HETZNER_TOKEN }}
+      TF_VAR_hcloud_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+      TF_VAR_hcloud_server_type: ${{ secrets.HETZNER_SERVER_TYPE }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to production server
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+
+      - name: Terraform init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform apply
+        working-directory: terraform
+        run: terraform apply -auto-approve
+
+      - name: Get server IP
+        id: tf-ip
+        working-directory: terraform
+        run: echo "server_ip=$(terraform output -raw server_ipv4_address)" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to production
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: ${{ steps.tf-ip.outputs.server_ip }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             if [ ! -d /var/www/intconnect-prod ]; then
-              git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git /var/www/intconnect-prod
+              git clone https://github.com/mmd-af/intconnect.git /var/www/intconnect-prod
             fi
 
             cd /var/www/intconnect-prod
@@ -35,32 +60,55 @@ jobs:
             ${{ secrets.ENV_FILE_PRODUCTION }}
             EOF
 
-            docker compose -f docker-compose.prod.yml pull || true
             docker compose -f docker-compose.prod.yml up -d --build
 
             docker compose -f docker-compose.prod.yml exec -T php composer install --no-dev --optimize-autoloader
-
             docker compose -f docker-compose.prod.yml exec -T php php artisan migrate --force
-            docker compose -f docker-compose.prod.yml exec -T php php artisan storage:link
+            docker compose -f docker-compose.prod.yml exec -T php php artisan storage:link || true
             docker compose -f docker-compose.prod.yml exec -T php php artisan optimize
 
   deploy-staging:
     if: github.ref == 'refs/heads/staging'
     runs-on: ubuntu-latest
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}
+      TF_VAR_hcloud_token: ${{ secrets.HETZNER_TOKEN }}
+      TF_VAR_hcloud_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+      TF_VAR_hcloud_server_type: ${{ secrets.HETZNER_SERVER_TYPE }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to staging server
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+
+      - name: Terraform init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform apply
+        working-directory: terraform
+        run: terraform apply -auto-approve
+
+      - name: Get server IP
+        id: tf-ip
+        working-directory: terraform
+        run: echo "server_ip=$(terraform output -raw server_ipv4_address)" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to staging
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: ${{ steps.tf-ip.outputs.server_ip }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             if [ ! -d /var/www/intconnect-staging ]; then
-              git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git /var/www/intconnect-staging
+              git clone https://github.com/mmd-af/intconnect.git /var/www/intconnect-staging
             fi
 
             cd /var/www/intconnect-staging
@@ -72,11 +120,9 @@ jobs:
             ${{ secrets.ENV_FILE_STAGING }}
             EOF
 
-            docker compose -f docker-compose.staging.yml pull || true
             docker compose -f docker-compose.staging.yml up -d --build
 
             docker compose -f docker-compose.staging.yml exec -T php composer install
-
             docker compose -f docker-compose.staging.yml exec -T php php artisan migrate --force
-            docker compose -f docker-compose.staging.yml exec -T php php artisan storage:link
+            docker compose -f docker-compose.staging.yml exec -T php php artisan storage:link || true
             docker compose -f docker-compose.staging.yml exec -T php php artisan optimize
