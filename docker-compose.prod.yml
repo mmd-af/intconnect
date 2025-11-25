@@ -1,56 +1,89 @@
 services:
   php:
-    image: ghcr.io/mmd-af/intconnect-prod:latest
-    container_name: intconnect-prod-php
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+      args:
+        UID: 1000
+        GID: 1000
+    container_name: intconnect-php-prod
     restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
     env_file:
-      - ./src/.env
-    # Use DB credentials from env_file; only set DB_HOST for service DNS
+      - .env.prod
     environment:
-      DB_HOST: "database"
+      TZ: Europe/Bucharest
+    working_dir: /var/www
     volumes:
-      - prod-storage:/var/www/storage
+      - './src:/var/www'
+      - './docker/php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini'
     networks:
       - intconnect-prod
-    depends_on:
-      - database
 
   nginx:
-    image: ghcr.io/mmd-af/intconnect-nginx-prod:latest
-    container_name: intconnect-prod-nginx
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.nginx
+    container_name: intconnect-nginx-prod
     restart: unless-stopped
-    ports:
-      - "80:80"
-    networks:
-      - intconnect-prod
     depends_on:
       - php
+    ports:
+      - '80:80'
+    environment:
+      FPM_HOST: "php:9000"
+      TZ: Europe/Bucharest
+    volumes:
+      - './src:/var/www'
+    networks:
+      - intconnect-prod
+
+  node:
+    image: node:20
+    container_name: intconnect-node-prod
+    working_dir: /var/www
+    volumes:
+      - './src:/var/www'
+    tty: true
+    networks:
+      - intconnect-prod
 
   database:
     image: mariadb:11.0
-    container_name: intconnect-prod-db
+    container_name: intconnect-database-prod
     restart: unless-stopped
-    # Read DB credentials from the env file you upload in the workflow: src/.env
-    env_file:
-      - ./src/.env
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 1m
+    ports:
+      - "3306:3306"
+    hostname: database
     volumes:
-      - prod-database:/var/lib/mysql
+      - "database-prod:/var/lib/mysql"
+    stop_signal: SIGINT
+    environment:
+      MYSQL_ROOT_PASSWORD: intconnect
+      MYSQL_PASSWORD: intconnect
+      MYSQL_USER: intconnect
+      MYSQL_DATABASE: intconnect_prod
+      TZ: Europe/Bucharest
     networks:
       - intconnect-prod
-    # Optional: a robust healthcheck you can enable later (commented out to avoid blocking deploy)
-    # healthcheck:
-    #   test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USERNAME} -p${DB_PASSWORD} --silent"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 10
-    #   start_period: 60s
 
 networks:
   intconnect-prod:
-    name: intconnect-prod-net
 
 volumes:
-  prod-database:
-    name: intconnect-prod-db-data
-  prod-storage:
-    name: intconnect-prod-storage-data
+  database-prod:
