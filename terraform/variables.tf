@@ -36,3 +36,9 @@ variable "hcloud_image" {
   type    = string
   default = "docker-ce"
 }
+
+variable "cloudflare_zone_id" {
+  type      = string
+  sensitive = true
+}
+
