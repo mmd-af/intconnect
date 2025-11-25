@@ -75,11 +75,11 @@ resource "cloudflare_record" "root" {
   allow_overwrite = true
 }
 
-# --- Cloudflare DNS: staging.intconnect.ro → same server ---
+# --- Cloudflare DNS: stg.intconnect.ro → server IP ---
 
-resource "cloudflare_record" "staging" {
+resource "cloudflare_record" "stg" {
   zone_id         = data.cloudflare_zone.intconnect.id
-  name            = "staging"
+  name            = "stg"
   type            = "A"
   value           = hcloud_server.intconnect.ipv4_address
   ttl             = 300
