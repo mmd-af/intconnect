@@ -17,9 +17,9 @@ variable "cloudflare_api_token" {
   sensitive = true
 }
 
-variable "domain" {
-  type    = string
-  default = "intconnect.ro"
+variable "cloudflare_zone_id" {
+  type      = string
+  sensitive = true
 }
 
 variable "hcloud_location" {
@@ -29,16 +29,10 @@ variable "hcloud_location" {
 
 variable "hcloud_server_type" {
   type    = string
-  default = "cx23"
+  default = "cx21"
 }
 
 variable "hcloud_image" {
   type    = string
   default = "docker-ce"
 }
-
-variable "cloudflare_zone_id" {
-  type      = string
-  sensitive = true
-}
-
