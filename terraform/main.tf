@@ -43,7 +43,7 @@ resource "hcloud_server" "intconnect" {
 
   labels = {
     project = "intconnect"
-    env     = "prod-staging"
+    env     = "production"
   }
 
   user_data = <<-EOF
@@ -61,15 +61,6 @@ resource "hcloud_server" "intconnect" {
 resource "cloudflare_record" "root" {
   zone_id = var.cloudflare_zone_id
   name    = "@"
-  type    = "A"
-  value   = hcloud_server.intconnect.ipv4_address
-  ttl     = 300
-  proxied = true
-}
-
-resource "cloudflare_record" "stg" {
-  zone_id = var.cloudflare_zone_id
-  name    = "stg"
   type    = "A"
   value   = hcloud_server.intconnect.ipv4_address
   ttl     = 300
