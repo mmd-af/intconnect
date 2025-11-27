@@ -12,7 +12,7 @@ services:
       database:
         condition: service_healthy
     env_file:
-      - .env.prod
+      - ./src/.env.prod
     environment:
       TZ: Europe/Bucharest
     working_dir: /var/www
@@ -73,11 +73,13 @@ services:
     volumes:
       - "database-prod:/var/lib/mysql"
     stop_signal: SIGINT
+    env_file:
+      - ./src/.env.prod
     environment:
-      MYSQL_ROOT_PASSWORD: intconnect
-      MYSQL_PASSWORD: intconnect
-      MYSQL_USER: intconnect
-      MYSQL_DATABASE: intconnect_prod
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-intconnect}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_DATABASE: ${DB_DATABASE}
       TZ: Europe/Bucharest
     networks:
       - intconnect-prod

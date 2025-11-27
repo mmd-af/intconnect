@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
 jobs:
-  deploy-production:
-    if: github.ref == 'refs/heads/main'
+  deploy:
     runs-on: ubuntu-latest
     env:
       TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}
@@ -30,6 +31,10 @@ jobs:
         working-directory: terraform
         run: terraform init
 
+      - name: Terraform plan
+        working-directory: terraform
+        run: terraform plan
+
       - name: Terraform apply
         working-directory: terraform
         run: terraform apply -auto-approve
@@ -39,6 +44,20 @@ jobs:
         working-directory: terraform
         run: echo "server_ip=$(terraform output -raw server_ipv4_address)" >> "$GITHUB_OUTPUT"
 
+      - name: Wait for SSH to be ready
+        run: |
+          echo "Waiting for SSH port to open on ${{ steps.tf-ip.outputs.server_ip }}..."
+          for i in {1..30}; do
+            if nc -z -w 2 ${{ steps.tf-ip.outputs.server_ip }} 22; then
+              echo "SSH port is open."
+              exit 0
+            fi
+            echo "Still waiting..."
+            sleep 2
+          done
+          echo "Error: SSH port did not open after 60 seconds."
+          exit 1
+
       - name: Deploy to production
         uses: appleboy/ssh-action@v1
         with:
@@ -46,22 +65,33 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            eval $(ssh-agent -s)
+            ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+            mkdir -p -m 700 ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
             if [ ! -d /var/www/intconnect-prod ]; then
-              git clone https://github.com/mmd-af/intconnect.git /var/www/intconnect-prod
+              git clone git@github.com:mmd-af/intconnect.git /var/www/intconnect-prod
             fi
 
             cd /var/www/intconnect-prod
             git fetch origin
             git checkout main
             git pull origin main
-
-            cat > .env.prod << 'EOF'
+            cat > src/.env.prod << 'EOF'
             ${{ secrets.ENV_FILE_PRODUCTION }}
             EOF
-
-            docker compose -f docker-compose.prod.yml up -d --build
-
-            docker compose -f docker-compose.prod.yml exec -T php composer install --no-dev --optimize-autoloader
-            docker compose -f docker-compose.prod.yml exec -T php php artisan migrate --force
-            docker compose -f docker-compose.prod.yml exec -T php php artisan storage:link || true
-            docker compose -f docker-compose.prod.yml exec -T php php artisan optimize
+            echo "Setting ownership of application files..."
+            chown -R 1000:1000 src
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml down --volumes
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml up -d --build
+            echo "Installing PHP dependencies..."
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php composer install --no-dev --optimize-autoloader
+            echo "Installing Node dependencies..."
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T node npm install
+            echo "Building frontend assets..."
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T node npm run build
+            echo "Running Laravel setup..."
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan migrate --force
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan storage:link || true
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan optimize

@@ -29,7 +29,7 @@ variable "hcloud_location" {
 
 variable "hcloud_server_type" {
   type    = string
-  default = "cx21"
+  default = "cx23"
 }
 
 variable "hcloud_image" {
