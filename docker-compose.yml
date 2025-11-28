@@ -16,7 +16,6 @@ services:
       TZ: Europe/Bucharest
     volumes:
       - './src:/var/www'
-      - /var/www/vendor
       - './docker/dev/php.ini:/usr/local/etc/php/conf.d/dev-php.ini'
     networks:
       - intconnect

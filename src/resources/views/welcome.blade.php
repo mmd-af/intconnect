@@ -19,13 +19,6 @@
             body {
                 font-family: 'instrument-sans', sans-serif;
             }
-
-            .full-height-center {
-                min-height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
         </style>
     @endif
 </head>
@@ -40,8 +33,8 @@
                         We're currently designing and building something amazing for you!
                         Please check back soon.
                     </p>
-                    <p class="text-success">
-                    <h3>This is the Staging Branch</h3>
+                    <p>
+                    <h3 class="text-success">This is the Staging Branch</h3>
                     </p>
                 </div>
             </div>
