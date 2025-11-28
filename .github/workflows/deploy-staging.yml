@@ -1,0 +1,93 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}
+      TF_VAR_hcloud_token: ${{ secrets.HETZNER_TOKEN }}
+      TF_VAR_hcloud_ssh_key_name: ${{ secrets.HETZNER_SSH_KEY_NAME }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
+      TF_VAR_hcloud_server_type: ${{ vars.HETZNER_SERVER_TYPE }}
+      TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+
+      - name: Terraform init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform plan
+        working-directory: terraform
+        run: terraform plan
+
+      - name: Terraform apply
+        working-directory: terraform
+        run: terraform apply -auto-approve
+
+      - name: Get server IP
+        id: tf-ip
+        working-directory: terraform
+        run: echo "server_ip=$(terraform output -raw server_ipv4_address)" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for SSH to be ready
+        run: |
+          echo "Waiting for SSH port to open on ${{ steps.tf-ip.outputs.server_ip }}..."
+          for i in {1..30}; do
+            if nc -z -w 2 ${{ steps.tf-ip.outputs.server_ip }} 22; then
+              echo "SSH port is open."
+              exit 0
+            fi
+            echo "Still waiting..."
+            sleep 2
+          done
+          echo "Error: SSH port did not open after 60 seconds."
+          exit 1
+
+      - name: Backup database
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ steps.tf-ip.outputs.server_ip }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/intconnect-prod 2>/dev/null || exit 0
+
+            echo "Checking if database container exists..."
+            
+            if ! docker ps -a --format '{{.Names}}' | grep -q '^intconnect-prod-db'; then
+              echo "Database container not found. Skipping backup (first deploy)."
+              exit 0
+            fi
+
+            echo "Creating database backup..."
+            TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+            BACKUP_DIR="/var/backups/intconnect"
+            mkdir -p $BACKUP_DIR
+
+            docker exec -i intconnect-prod-db \
+              sh -c 'mysqldump -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' \
+              > "$BACKUP_DIR/db_backup_$TIMESTAMP.sql" || echo "Backup failed (maybe first deploy)."
+
+            echo "Backup saved to: $BACKUP_DIR/db_backup_$TIMESTAMP.sql"
+
+            find $BACKUP_DIR -type f -mtime +30 -delete
+            echo "Backup cleanup completed."
+
+      - name: Deploy to production
+        run: |
+          echo "ready to implement"
