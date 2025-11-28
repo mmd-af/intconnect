@@ -65,6 +65,8 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
+
             eval $(ssh-agent -s)
             ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
             mkdir -p -m 700 ~/.ssh
@@ -99,7 +101,7 @@ jobs:
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T node npm run build
 
             echo "Showing logs for PHP container..."
-            docker compose --env-file src/.env.staging -f docker-compose.staging.yml logs intconnect-php-staging
+            docker compose --env-file src/.env.staging -f docker-compose.staging.yml logs php
 
             echo "Running Laravel setup..."
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php php artisan migrate --force
