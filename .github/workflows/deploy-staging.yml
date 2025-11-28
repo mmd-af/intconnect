@@ -19,6 +19,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Get server IP
+        id: tf-ip
+        working-directory: terraform
+        run: echo "server_ip=$(terraform output -raw server_ipv4_address)" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for SSH to be ready
+        run: |
+          echo "Waiting for SSH port to open on ${{ steps.tf-ip.outputs.server_ip }}..."
+          for i in {1..30}; do
+            if nc -z -w 2 ${{ steps.tf-ip.outputs.server_ip }} 22; then
+              echo "SSH port is open."
+              exit 0
+            fi
+            echo "Still waiting..."
+            sleep 2
+          done
+          echo "Error: SSH port did not open after 60 seconds."
+          exit 1
+
       - name: Deploy to staging
         uses: appleboy/ssh-action@v1
         with:
