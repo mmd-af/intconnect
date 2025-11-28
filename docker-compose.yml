@@ -1,8 +1,8 @@
 services:
   php:
     build:
-      context: ./docker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
@@ -16,20 +16,21 @@ services:
       TZ: Europe/Bucharest
     volumes:
       - './src:/var/www'
-      - './docker/php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini'
+      - /var/www/vendor
+      - './docker/dev/php.ini:/usr/local/etc/php/conf.d/dev-php.ini'
     networks:
       - intconnect
 
   nginx:
     build:
-      context: ./docker
-      dockerfile: Dockerfile.nginx
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
     container_name: intconnect-nginx
     restart: unless-stopped
     depends_on:
       - php
     ports:
-      - '127.0.0.1:8085:80'
+      - '127.0.0.1:8080:80'
     environment:
       FPM_HOST: "php:9000"
       TZ: Europe/Bucharest

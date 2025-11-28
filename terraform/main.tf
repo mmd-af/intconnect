@@ -87,3 +87,12 @@ resource "cloudflare_dns_record" "root" {
   ttl     = 1
   proxied = true
 }
+
+resource "cloudflare_dns_record" "stg" {
+  zone_id = var.cloudflare_zone_id
+  name    = "stg"
+  type    = "A"
+  content = hcloud_server.intconnect.ipv4_address
+  ttl     = 1
+  proxied = true
+}
