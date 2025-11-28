@@ -26,7 +26,7 @@
         <div class="row justify-content-center w-100">
             <div class="col-md-8 col-lg-6">
                 <div class="card shadow-lg p-4 p-md-5">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <h1 class="display-4 fw-bold text-primary mb-3">Site Under Construction</h1>
                         <p class="lead text-muted mb-4">
                             We're currently designing and building something amazing for you!
