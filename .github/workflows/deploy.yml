@@ -58,6 +58,36 @@ jobs:
           echo "Error: SSH port did not open after 60 seconds."
           exit 1
 
+      - name: Backup database
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ steps.tf-ip.outputs.server_ip }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/intconnect-prod 2>/dev/null || exit 0
+
+            echo "Checking if database container exists..."
+           
+            if ! docker ps -a --format '{{.Names}}' | grep -q '^intconnect-prod-db'; then
+              echo "Database container not found. Skipping backup (first deploy)."
+              exit 0
+            fi
+
+            echo "Creating database backup..."
+            TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+            BACKUP_DIR="/var/backups/intconnect"
+            mkdir -p $BACKUP_DIR
+
+            docker exec -i intconnect-prod-db \
+              sh -c 'mysqldump -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE"' \
+              > "$BACKUP_DIR/db_backup_$TIMESTAMP.sql" || echo "Backup failed (maybe first deploy)."
+
+            echo "Backup saved to: $BACKUP_DIR/db_backup_$TIMESTAMP.sql"
+
+            find $BACKUP_DIR -type f -mtime +30 -delete
+            echo "Backup cleanup completed."
+
       - name: Deploy to production
         uses: appleboy/ssh-action@v1
         with:
@@ -77,20 +107,27 @@ jobs:
             cd /var/www/intconnect-prod
             git fetch origin
             git checkout main
-            git pull origin main
+            git reset --hard origin/main
+
             cat > src/.env.prod << 'EOF'
             ${{ secrets.ENV_FILE_PRODUCTION }}
             EOF
-            echo "Setting ownership of application files..."
+
+            echo "Setting ownership..."
             chown -R 1000:1000 src
-            docker compose --env-file src/.env.prod -f docker-compose.prod.yml down --volumes
+
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml down
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml up -d --build
+
             echo "Installing PHP dependencies..."
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php composer install --no-dev --optimize-autoloader
+
             echo "Installing Node dependencies..."
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T node npm install
-            echo "Building frontend assets..."
+
+            echo "Building frontend..."
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T node npm run build
+
             echo "Running Laravel setup..."
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan migrate --force
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan storage:link || true
