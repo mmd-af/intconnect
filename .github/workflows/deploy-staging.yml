@@ -98,6 +98,9 @@ jobs:
             echo "Building frontend..."
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T node npm run build
 
+            echo "Showing logs for PHP container..."
+            docker compose --env-file src/.env.staging -f docker-compose.staging.yml logs intconnect-php-staging
+
             echo "Running Laravel setup..."
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php php artisan migrate --force
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php php artisan storage:link || true

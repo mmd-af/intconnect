@@ -19,7 +19,6 @@ services:
     volumes:
       - './src:/var/www'
       - /var/www/vendor
-      - /var/www/public/build
     networks:
       - intconnect-staging
 
@@ -69,7 +68,7 @@ services:
       retries: 3
       start_period: 1m
     ports:
-      - "3306:3306"
+      - "3307:3306"
     hostname: database
     volumes:
       - "database-staging:/var/lib/mysql"
