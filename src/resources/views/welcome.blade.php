@@ -16,26 +16,37 @@
     @else
         <style>
             /* Minimal fallback styles if Vite assets are not built */
-            body { font-family: 'instrument-sans', sans-serif; }
-            .full-height-center { min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+            body {
+                font-family: 'instrument-sans', sans-serif;
+            }
+
+            .full-height-center {
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         </style>
     @endif
 </head>
 <body class="bg-light">
-    <div class="container full-height-center">
-        <div class="row justify-content-center w-100">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-lg p-4 p-md-5">
-                    <div class="card-body text-center">
-                        <h1 class="display-4 fw-bold text-primary mb-3">Site Under Construction</h1>
-                        <p class="lead text-muted mb-4">
-                            We're currently designing and building something amazing for you!
-                            Please check back soon.
-                        </p>
-                    </div>
+<div class="container full-height-center">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg p-4 p-md-5">
+                <div class="card-body text-center">
+                    <h1 class="display-4 fw-bold text-primary mb-3">Site Under Construction</h1>
+                    <p class="lead text-muted mb-4">
+                        We're currently designing and building something amazing for you!
+                        Please check back soon.
+                    </p>
+                    <p class="text-success">
+                    <h3>This is the Staging Branch</h3>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>
