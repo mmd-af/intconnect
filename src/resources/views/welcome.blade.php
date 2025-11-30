@@ -223,30 +223,28 @@
             <div class="col-lg-6">
                 <p class="section-title bg-white text-start text-primary pe-3">About Us</p>
                 <h1 class="display-6 mb-4 wow fadeIn" data-wow-delay="0.2s">Join Hands, Change the World</h1>
-                <p class="mb-4 wow fadeIn" data-wow-delay="0.3s">Every hand extended in kindness brings us closer to
-                    a world free from suffering. Be part of a global movement dedicated to building a future where
-                    equality and compassion thrive.</p>
+                <p class="mb-4 wow fadeIn" data-wow-delay="0.3s">We’re a community that loves people and enjoys helping
+                    friends — and future friends — from around the world who come to study, work, and live in Romania.
+                    We create a space where people from different countries can connect, integrate, feel at home in
+                    Bucharest, and grow together.</p>
                 <div class="row g-4 pt-2">
-                    <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
-                        <div class="h-100">
-                            <h3>Our Mission</h3>
-                            <p>Our mission is to uplift underprivileged communities by providing resources,
-                                education, and tools for growth.</p>
-                            <p class="text-dark"><i class="fa fa-check text-primary me-2"></i>No one should go to
-                                bed hungry.</p>
-                            <p class="text-dark"><i class="fa fa-check text-primary me-2"></i>We spread kindness and
-                                support.</p>
-                            <p class="text-dark mb-0"><i class="fa fa-check text-primary me-2"></i>We can change
-                                someone’s life.</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 wow fadeIn" data-wow-delay="0.5s">
-                        <div class="h-100 bg-primary p-4 text-center">
-                            <p class="fs-5 text-dark">Through your Connection...</p>
-                            <a class="btn btn-secondary py-2 px-4" href="#!">Contact Now</a>
+                    <div class="col-sm-12 wow fadeIn" data-wow-delay="0.4s">
+                        <div class="h-100 text-start">
+                            <h3>What we offer</h3>
+                            <p class="text-dark"><i class="fa fa-check text-primary me-2"></i>Romanian and English
+                                language practice groups.</p>
+                            <p class="text-dark"><i class="fa fa-check text-primary me-2"></i>Activities and community
+                                events where you can meet people and make friends.</p>
+                            <p class="text-dark"><i class="fa fa-check text-primary me-2"></i>Trips.</p>
+                            <p class="text-dark mb-4"><i class="fa fa-check text-primary me-2"></i>Personal development
+                                (programs that help you achieve your goals).</p>
+                            <div class="text-start">
+                                <a class="btn btn-secondary py-2 px-4" href="#!">Contact Now</a>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -260,8 +258,7 @@
         <div class="row g-5">
             <div class="col-md-12 col-lg-4 col-xl-3 wow fadeIn" data-wow-delay="0.1s">
                 <div class="service-title">
-                    <h1 class="display-6 mb-4">What We Do for Those in Need.</h1>
-                    <p class="fs-5 mb-0">We work to bring smiles, hope, and a brighter future to those in need.</p>
+                    <h1 class="display-6 mb-4">Our values</h1>
                 </div>
             </div>
             <div class="col-md-12 col-lg-8 col-xl-9">
@@ -269,67 +266,31 @@
                     <div class="col-sm-6 col-md-4 wow fadeIn" data-wow-delay="0.1s">
                         <div class="service-item h-100">
                             <div class="btn-square bg-light mb-4">
-                                <i class="fa fa-droplet fa-2x text-secondary"></i>
+                                <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
                             </div>
-                            <h3>Pure Water</h3>
-                            <p class="mb-2">We’re creating programs that address urgent needs while fostering
-                                long-term solutions for sustainable change.</p>
-                            <a href="#!">Read More</a>
+                            <h3>Connection</h3>
+                            <p class="mb-2">We build bridges between cultures and backgrounds, creating a welcoming
+                                environment where lasting friendships can grow.</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-4 wow fadeIn" data-wow-delay="0.3s">
                         <div class="service-item h-100">
                             <div class="btn-square bg-light mb-4">
-                                <i class="fa fa-hospital fa-2x text-secondary"></i>
+                                <i class="fa-solid fa-arrow-up-right-dots fa-2x text-secondary"></i>
                             </div>
-                            <h3>Health Care</h3>
-                            <p class="mb-2">We’re creating programs that address urgent needs while fostering
-                                long-term solutions for sustainable change.</p>
-                            <a href="#!">Read More</a>
+                            <h3>Growth</h3>
+                            <p class="mb-2">We value continual learning and personal development in every area of
+                                life.</p>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-4 wow fadeIn" data-wow-delay="0.5s">
                         <div class="service-item h-100">
                             <div class="btn-square bg-light mb-4">
-                                <i class="fa fa-hands-holding-child fa-2x text-secondary"></i>
+                                <i class="fa-solid fa-arrow-right-to-city fa-2x text-secondary"></i>
                             </div>
-                            <h3>Social Care</h3>
-                            <p class="mb-2">We’re creating programs that address urgent needs while fostering
-                                long-term solutions for sustainable change.</p>
-                            <a href="#!">Read More</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-4 wow fadeIn" data-wow-delay="0.1s">
-                        <div class="service-item h-100">
-                            <div class="btn-square bg-light mb-4">
-                                <i class="fa fa-bowl-food fa-2x text-secondary"></i>
-                            </div>
-                            <h3>Healthy Food</h3>
-                            <p class="mb-2">We’re creating programs that address urgent needs while fostering
-                                long-term solutions for sustainable change.</p>
-                            <a href="#!">Read More</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-4 wow fadeIn" data-wow-delay="0.3s">
-                        <div class="service-item h-100">
-                            <div class="btn-square bg-light mb-4">
-                                <i class="fa fa-school-flag fa-2x text-secondary"></i>
-                            </div>
-                            <h3>Primary Education</h3>
-                            <p class="mb-2">We’re creating programs that address urgent needs while fostering
-                                long-term solutions for sustainable change.</p>
-                            <a href="#!">Read More</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-4 wow fadeIn" data-wow-delay="0.5s">
-                        <div class="service-item h-100">
-                            <div class="btn-square bg-light mb-4">
-                                <i class="fa fa-home fa-2x text-secondary"></i>
-                            </div>
-                            <h3>Residence Facilities</h3>
-                            <p class="mb-2">We’re creating programs that address urgent needs while fostering
-                                long-term solutions for sustainable change.</p>
-                            <a href="#!">Read More</a>
+                            <h3>Initiative</h3>
+                            <p class="mb-2">We believe in mutual giving and participation, where everyone contributes
+                                and takes part in building up our community.</p>
                         </div>
                     </div>
                 </div>
