@@ -10,8 +10,7 @@
         }, 1);
     };
     spinner();
-    
-    
+
     // Initiate the wowjs
     new WOW().init();
 
@@ -24,8 +23,7 @@
             $('.nav-bar').removeClass('fixed-top').css('padding', '0px 90px');
         }
     });
-    
-    
+
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
@@ -75,15 +73,15 @@
 
     // Header carousel
     $(".header-carousel").owlCarousel({
-        animateOut: 'rotateOutUpRight',
-        animateIn: 'rotateInDownLeft',
+        animateOut: 'slideOutRight',
+        animateIn: 'slideInLeft',
         items: 1,
         autoplay: true,
         smartSpeed: 1000,
         dots: false,
         loop: true,
-        nav : true,
-        navText : [
+        nav: true,
+        navText: [
             '<i class="bi bi-chevron-left"></i>',
             '<i class="bi bi-chevron-right"></i>'
         ]
@@ -100,12 +98,12 @@
         dots: false,
         loop: true,
         nav: true,
-        navText : [
+        navText: [
             '<i class="bi bi-chevron-left"></i>',
             '<i class="bi bi-chevron-right"></i>'
         ]
     });
 
-    
+
 })(jQuery);
 
