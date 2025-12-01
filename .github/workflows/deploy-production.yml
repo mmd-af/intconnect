@@ -68,7 +68,7 @@ jobs:
             cd /var/www/intconnect-prod 2>/dev/null || exit 0
 
             echo "Checking if database container exists..."
-           
+            
             if ! docker ps -a --format '{{.Names}}' | grep -q '^intconnect-prod-db'; then
               echo "Database container not found. Skipping backup (first deploy)."
               exit 0
@@ -132,3 +132,4 @@ jobs:
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan migrate --force
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan storage:link || true
             docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan optimize
+            docker compose --env-file src/.env.prod -f docker-compose.prod.yml exec -T php php artisan make:filament-user --email=developer@intconnect.ro --name=Admin --password=password

@@ -107,3 +107,4 @@ jobs:
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php php artisan migrate --force
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php php artisan storage:link || true
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php php artisan optimize
+            docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php php artisan make:filament-user --email=developer@intconnect.ro --name=Admin --password=password
