@@ -13,6 +13,7 @@ class Event extends Model
         'date',
         'address',
         'photo',
+        'created_by',
     ];
 
     protected function casts(): array
@@ -22,8 +23,8 @@ class Event extends Model
         ];
     }
 
-    public function createBy()
+    public function createdBy()
     {
-        return $this->belongsTo(User::class, 'creat_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
