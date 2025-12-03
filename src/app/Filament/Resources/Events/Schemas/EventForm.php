@@ -3,8 +3,9 @@
 namespace App\Filament\Resources\Events\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class EventForm
@@ -24,11 +25,10 @@ class EventForm
                     ->required(),
                 TextInput::make('address')
                     ->required(),
-                TextInput::make('photo')
+                FileUpload::make('photo')
+                    ->disk('public')
+                    ->image()
                     ->required(),
-                TextInput::make('creat_by')
-                    ->numeric()
-                    ->default(null),
             ]);
     }
 }
