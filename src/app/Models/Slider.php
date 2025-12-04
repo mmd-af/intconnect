@@ -14,7 +14,7 @@ class Slider extends Model
         'subtitle',
         'button_text',
         'button_link',
-        'image',
+        'photo',
         'created_by',
     ];
 

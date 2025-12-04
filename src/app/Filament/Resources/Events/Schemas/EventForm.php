@@ -27,6 +27,7 @@ class EventForm
                     ->required(),
                 FileUpload::make('photo')
                     ->disk('public')
+                    ->directory('events')
                     ->image()
                     ->required(),
             ]);
