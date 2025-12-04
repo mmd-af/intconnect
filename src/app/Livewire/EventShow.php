@@ -6,7 +6,6 @@ use App\Models\Event;
 use Livewire\Component;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
-use Artesaos\SEOTools\Facades\Twitter;
 
 class EventShow extends Component
 {
@@ -25,10 +24,6 @@ class EventShow extends Component
         OpenGraph::setDescription(str()->limit($this->event->description, 150));
         OpenGraph::addImage(asset('storage/' . $this->event->photo));
 
-        // Twitter Card
-        Twitter::setTitle($this->event->title);
-        Twitter::setDescription(str()->limit($this->event->description, 150));
-        Twitter::setImage(asset('storage/' . $this->event->photo));
     }
 
     public function render()
