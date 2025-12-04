@@ -6,6 +6,8 @@
 
     <title>{{ config('app.name', 'International Connect') }}</title>
 
+    {!! \Artesaos\SEOTools\Facades\SEOTools::generate() !!}
+
     <!-- Favicon -->
     <link href="{{asset('template/img/favicon.ico')}}" rel="icon">
 

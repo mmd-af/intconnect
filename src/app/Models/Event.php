@@ -27,4 +27,11 @@ class Event extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    protected static function booted()
+    {
+     static::creating(function ($event) {
+         $event->slug = \Str::slug($event->title);
+     });
+    }
 }

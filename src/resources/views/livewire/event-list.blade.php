@@ -11,10 +11,12 @@
                     <div class="event-item h-100 p-4">
                         <img class="img-fluid w-100 mb-4" src="{{ asset('storage/' . $event->photo) }}"
                              alt="{{$event->title}}" style="height: 200px; object-fit: cover;">
-                        <a href="#!" class="h3 d-inline-block">{{$event->title}}</a>
+                        <a href="{{ route('event.show', $event->slug) }}" class="h3 d-inline-block">
+                         {{$event->title}}
+                        </a>
                         <p>{{ Str::limit($event->description, 160) }}
                             @if(strlen($event->description) > 160)
-                                <a href="">read more</a>
+                                <a href="{{ route('event.show', $event->slug) }}">read more</a>
                             @endif</p>
                         <div class="bg-light p-4">
                             <p class="mb-1"><i class="fa fa-clock text-primary me-2"></i>{{$event->time}}</p>
