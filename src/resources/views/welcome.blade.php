@@ -128,48 +128,7 @@
 
 
 <!-- Carousel Start -->
-<div class="container-fluid p-0 wow fadeIn" data-wow-delay="0.1s">
-    <div class="owl-carousel header-carousel py-5">
-        <div class="container py-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-6">
-                    <div class="carousel-text">
-                        <h1 class="display-1 text-uppercase mb-3">Together for a Better Tomorrow</h1>
-                        <p class="fs-5 mb-5">We believe in creating opportunities and empowering communities through
-                            education.</p>
-                        <div class="d-flex">
-                            <a class="btn btn-secondary py-3 px-4" href="#!">Join Us Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="carousel-img">
-                        <img class="w-100" src="{{asset('template/img/carousel-1.jpg')}}" alt="International Connect">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container py-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-6">
-                    <div class="carousel-text">
-                        <h1 class="display-1 text-uppercase mb-3">Together, We Can Do something...</h1>
-                        <p class="fs-5 mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex
-                            exercitationem...</p>
-                        <div class="d-flex mt-4">
-                            <a class="btn btn-secondary py-3 px-4" href="#!">Join Us Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="carousel-img">
-                        <img class="w-100" src="{{asset('template/img/carousel-2.jpg')}}" alt="International Connect">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<livewire:slider-list />
 <!-- Carousel End -->
 
 <!-- Video Start -->
