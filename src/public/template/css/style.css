@@ -177,7 +177,7 @@
     background-size: cover;
 }
 
-.page-header .breadcrumb-item + .breadcrumb-item::before {
+.page-header .breadcrumb-item+.breadcrumb-item::before {
     color: var(--bs-tertiary);
 }
 
@@ -321,32 +321,6 @@
     width: calc(100% + 60px);
     left: 0;
 }
-
-
-/*** About ***/
-.about-img {
-    position: relative;
-}
-
-.about-img::before,
-.about-img::after {
-    position: absolute;
-    content: "";
-    width: 33%;
-    height: 90px;
-    background: var(--bs-white);
-}
-
-.about-img::before {
-    top: 0px;
-    left: 0px;
-}
-
-.about-img::after {
-    right: 0px;
-    bottom: 0px;
-}
-
 
 /*** Service ***/
 .service-title {
@@ -501,10 +475,11 @@
     background: rgba(255, 255, 255, .5);
 }
 
-.donate .donate-form .btn-group .btn-check:checked + .btn {
+.donate .donate-form .btn-group .btn-check:checked+.btn {
     border: none;
     background: var(--bs-white);
 }
+
 
 
 /*** Team ***/
@@ -520,6 +495,7 @@
 .team-item .team-detail span {
     letter-spacing: 2px;
 }
+
 
 
 /*** Testimonial ***/
@@ -583,6 +559,7 @@
         top: 6.3rem;
     }
 }
+
 
 
 /*** Footer ***/

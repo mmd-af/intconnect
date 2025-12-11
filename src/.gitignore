@@ -25,3 +25,4 @@ Thumbs.db
 .composer
 .env.prod
 .env.staging
+.bash_history
