@@ -25,6 +25,14 @@ jobs:
       - name: Cache Terraform providers
         uses: actions/cache@v3
         with:
+          path: ~/.terraform.d/plugins
+          key: ${{ runner.os }}-tf-${{ hashFiles('terraform/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-tf-
+
+      - name: Cache Terraform providers
+        uses: actions/cache@v3
+        with:
           path: ~/.terraform.d/plugin-cache
           key: terraform-${{ runner.os }}-${{ hashFiles('terraform/.terraform.lock.hcl') }}
           restore-keys: terraform-${{ runner.os }}-
