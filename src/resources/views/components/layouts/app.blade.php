@@ -30,7 +30,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('template/css/style.css')}}" rel="stylesheet">
-    
+
     @livewireStyles
 
 </head>
@@ -42,7 +42,6 @@
     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
 </div>
 <!-- Spinner End -->
-
 
 <!-- Topbar Start -->
 <div class="container-fluid bg-secondary top-bar wow fadeIn" data-wow-delay="0.1s">
@@ -93,7 +92,6 @@
 </div>
 <!-- Topbar End -->
 
-
 <!-- Navbar Start -->
 <div class="container-fluid bg-secondary px-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="nav-bar">
@@ -122,8 +120,7 @@
 </div>
 <!-- Navbar End -->
 
-{{ $slot }}
-
+@yield('content')
 
 <!-- Footer Start -->
 <div class="container-fluid footer py-5 wow fadeIn" data-wow-delay="0.1s">

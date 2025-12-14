@@ -4,7 +4,6 @@
 
 <!-- Carousel Start -->
 @livewire('slider-list')
-<!-- <livewire:slider-list /> -->
 <!-- Carousel End -->
 
 <!-- Video Start -->
@@ -31,7 +30,6 @@
 </div>
 <!-- Video End -->
 
-
 <!-- Video Modal Start -->
 <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -51,7 +49,6 @@
     </div>
 </div>
 <!-- Video Modal End -->
-
 
 <!-- About Start -->
 <div class="container-fluid py-5" id="about-us">
@@ -90,7 +87,6 @@
     </div>
 </div>
 <!-- About End -->
-
 
 <!-- Service Start -->
 <div class="container-fluid py-5" id="service">
@@ -139,7 +135,6 @@
     </div>
 </div>
 <!-- Service End -->
-
 
 <!-- Features Start -->
 <div class="container-fluid py-5">
@@ -222,7 +217,6 @@
 </div>
 <!-- Banner End -->
 
-<!-- <livewire:event-list /> -->
 @livewire('event-list')
 
 <!-- Contact Start -->
@@ -262,7 +256,6 @@
     </div>
 </div>
 <!-- Contact End -->
-
 
 <!-- Team Start -->
 <div class="container-fluid py-5">
@@ -321,7 +314,6 @@
     </div>
 </div>
 <!-- Team End -->
-
 
 <!-- Testimonial Start -->
 <div class="container-fluid py-5">
@@ -437,7 +429,6 @@
     </div>
 </div>
 <!-- Testimonial End -->
-
 
 <!-- Newsletter Start -->
 <div class="container-fluid bg-primary py-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
