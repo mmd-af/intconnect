@@ -20,7 +20,9 @@ class SliderResource extends Resource
 {
     protected static ?string $model = Slider::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?int $navigationSort = 1;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::AdjustmentsHorizontal;
 
     protected static ?string $recordTitleAttribute = 'Slider';
 
