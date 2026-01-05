@@ -34,7 +34,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('template/css/style.css')}}" rel="stylesheet">
-    
+
     @livewireStyles
 
 </head>
@@ -136,9 +136,9 @@
         <div class="row g-5 py-5">
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Our Office</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Strada Amilcar C. Săndulescu 3</p>
                 <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@intconnect.ro</p>
                 <div class="d-flex pt-3">
                     <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-x-twitter"></i></a>
                     <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-facebook-f"></i></a>
@@ -148,11 +148,10 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Quick Links</h4>
-                <a class="btn btn-link" href="#!">About Us</a>
-                <a class="btn btn-link" href="#!">Contact Us</a>
-                <a class="btn btn-link" href="#!">Our Services</a>
-                <a class="btn btn-link" href="#!">Terms & Condition</a>
-                <a class="btn btn-link" href="#!">Support</a>
+                <a class="btn btn-link" href="#about-us">About Us</a>
+                <a class="btn btn-link" href="#contact">Contact Us</a>
+                <a class="btn btn-link" href="#service">Our Services</a>
+                <a class="btn btn-link" href="#contact">Support</a>
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Business Hours</h4>
@@ -190,13 +189,13 @@
         <div class="copyright pt-5">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    &copy; <a class="fw-semi-bold" href="#!">Your Site Name</a>, All Right Reserved.
+                    &copy; <a class="fw-semi-bold" href="#!">intconnect.ro</a>, All Right Reserved.
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
                     <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
                     <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    Designed By <a class="fw-semi-bold" href="https://htmlcodex.com">HTML Codex</a>. Distributed by
+                    Designed By <a class="fw-semi-bold" href="https://m-afshar.de" target="_blank">mdd-af</a>. Distributed by
                     <a class="fw-semi-bold" href="https://themewagon.com">ThemeWagon</a>
                 </div>
             </div>
