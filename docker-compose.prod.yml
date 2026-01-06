@@ -41,16 +41,6 @@ services:
     networks:
       - intconnect-prod
 
-  node:
-    image: node:20
-    container_name: intconnect-node-prod
-    working_dir: /var/www
-    volumes:
-      - './src:/var/www'
-    tty: true
-    networks:
-      - intconnect-prod
-
   database:
     image: mariadb:11.0
     container_name: intconnect-database-prod

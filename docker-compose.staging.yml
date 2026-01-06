@@ -39,16 +39,6 @@ services:
     networks:
       - intconnect-staging
 
-  node:
-    image: node:20
-    container_name: intconnect-node-staging
-    working_dir: /var/www
-    volumes:
-      - './src:/var/www'
-    tty: true
-    networks:
-      - intconnect-staging
-
   database:
     image: mariadb:11.0
     container_name: intconnect-database-staging

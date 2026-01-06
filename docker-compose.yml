@@ -38,17 +38,6 @@ services:
     networks:
       - intconnect
 
-  node:
-    image: node:20
-    container_name: intconnect-node
-    working_dir: /var/www
-    user: "${UID:-1000}:${GID:-1000}"
-    volumes:
-      - './src:/var/www'
-    tty: true
-    networks:
-      - intconnect
-
   database:
     image: mariadb:11.0
     container_name: intconnect-database
