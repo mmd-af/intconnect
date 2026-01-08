@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Events\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -25,9 +25,8 @@ class EventForm
                     ->required(),
                 TextInput::make('address')
                     ->required(),
-                FileUpload::make('photo')
-                    ->disk('public')
-                    ->directory('events')
+                SpatieMediaLibraryFileUpload::make('photo')
+                    ->collection('events')
                     ->image()
                     ->required(),
             ]);

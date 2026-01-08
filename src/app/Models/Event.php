@@ -4,18 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Event extends Model
-{  
-     use SoftDeletes;
-     
+class Event extends Model implements HasMedia
+{
+    use SoftDeletes, InteractsWithMedia;
+
     protected $fillable = [
         'title',
         'description',
         'time',
         'date',
         'address',
-        'photo',
         'created_by',
     ];
 
@@ -33,8 +34,8 @@ class Event extends Model
 
     protected static function booted()
     {
-     static::creating(function ($event) {
-         $event->slug = \Str::slug($event->title);
-     });
+        static::creating(function ($event) {
+            $event->slug = \Str::slug($event->title);
+        });
     }
 }

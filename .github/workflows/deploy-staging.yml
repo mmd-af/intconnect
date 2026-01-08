@@ -103,12 +103,6 @@ jobs:
             echo "Installing PHP dependencies..."
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T php composer install --no-dev --optimize-autoloader
 
-            echo "Installing Node dependencies..."
-            docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T node npm install
-
-            echo "Building frontend..."
-            docker compose --env-file src/.env.staging -f docker-compose.staging.yml exec -T node npm run build
-
             echo "Showing logs for PHP container..."
             docker compose --env-file src/.env.staging -f docker-compose.staging.yml logs php
 
