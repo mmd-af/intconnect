@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) \
-    bcmath sockets pdo_mysql exif pcntl gd zip intl opcache
+    bcmath sockets pdo_mysql exif pcntl gd zip intl opcache fileinfo
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
