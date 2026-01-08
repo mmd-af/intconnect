@@ -26,3 +26,4 @@ Thumbs.db
 .env.prod
 .env.staging
 .bash_history
+.config/
