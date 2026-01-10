@@ -48,9 +48,9 @@ A production-ready Laravel (v12) application showcasing full-stack backend and D
 
 ---
 
-## What this project demonstrates (for your CV) 🎯
+## What this project demonstrates 🎯
 
-Use these points directly on your resume or portfolio — they reflect concrete, demonstrable skills implemented in this repo:
+This project reflects concrete, demonstrable backend and automation skills implemented across the codebase and infrastructure:
 
 - **Backend engineering (Laravel & PHP):** Migrations, Eloquent models, validation rules, Livewire components, file storage, soft deletes, model events.
 - **Automation / DevOps:** Terraform infrastructure (Hetzner + Cloudflare), GitHub Actions pipelines performing `terraform plan`/`apply`, remote deploy via SSH, running container lifecycle commands, and automated DB backups with retention logic.
@@ -118,19 +118,6 @@ php artisan test
 
 ---
 
-## Notes & How to include this in your CV 📝
-
-Suggested one-liner for resume/project description:
-
-"Built a production-ready Laravel application with Livewire and Filament, automated infrastructure provisioning with Terraform, and a GitHub Actions CI/CD pipeline deploying containerized releases to Hetzner with Cloudflare DNS and automated DB backups."
-
-Short bullet examples for CV:
-- Implemented Terraform IaC for Hetzner servers + Cloudflare DNS and automated GitHub Actions deployment pipelines (staging & production).
-- Implemented Laravel backend features (events, contact/subscribe flows) with Livewire and Filament admin; enforced server-side validation and media handling using Spatie.
-- Containerized the app with multi-stage Docker builds and automated frontend asset build using Vite.
-
----
-
 ## Where to look in the repo (short pointers) 🔎
 
 - App logic: `src/app/` (models, Livewire components)
@@ -141,8 +128,3 @@ Short bullet examples for CV:
 
 ---
 
-If you'd like, I can: ✅ generate a shorter one-page project summary for your CV, ✅ draft a GitHub project readme badge section (CI / deploy status), or ✅ tailor the resume bullets for a specific job title (e.g., Backend Engineer / DevOps Engineer). Which would you prefer next?
-
----
-
-*Generated with attention to highlighting backend automation and operational skills.*
