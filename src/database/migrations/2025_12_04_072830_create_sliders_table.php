@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('subtitle')->nullable();
             $table->string('button_text')->nullable();
             $table->string('button_link')->nullable();
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();

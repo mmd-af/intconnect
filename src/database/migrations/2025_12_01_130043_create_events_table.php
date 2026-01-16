@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->date('date');
             $table->string('time');
             $table->string('address');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->foreignId('created_by')
                 ->nullable()
                 ->constrained('users', 'id')
