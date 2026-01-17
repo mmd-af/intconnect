@@ -1,12 +1,7 @@
-@extends('layouts.app')
-
-@section('content')
-
 <div class="container py-5">
     <div class="row">
         <div class="col-lg-8 mx-auto">
-
-            <img src="{{ asset('storage/' . $event->photo) }}"
+            <img src="{{ $event->getMedia("*")[0]->getFullUrl() }}"
                  class="img-fluid mb-4 w-100"
                  style="height: 350px; object-fit: cover;"
                  alt="{{ $event->title }}">
@@ -38,4 +33,3 @@
     </div>
 </div>
 
-@endsection

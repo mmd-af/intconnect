@@ -22,12 +22,12 @@ class EventShow extends Component
         // OpenGraph
         OpenGraph::setTitle($this->event->title);
         OpenGraph::setDescription(str()->limit($this->event->description, 150));
-        OpenGraph::addImage(asset('storage/' . $this->event->photo));
+        OpenGraph::addImage($this->event->getMedia("*")[0]->getFullUrl());
 
     }
 
     public function render()
     {
-        return view('livewire.event-show');
+        return view('livewire.event-show')->layout('layouts.component');
     }
 }

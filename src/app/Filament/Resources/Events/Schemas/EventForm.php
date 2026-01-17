@@ -26,7 +26,7 @@ class EventForm
                 TextInput::make('address')
                     ->required(),
                 SpatieMediaLibraryFileUpload::make('photo')
-                    ->collection('events')
+                    ->disk('public')
                     ->image()
                     ->required(),
             ]);

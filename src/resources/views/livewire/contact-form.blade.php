@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-secondary py-3 w-100" type="submit">Join Now</button>
+                                <button class="btn btn-secondary py-3 w-100" type="submit">Send Message</button>
                             </div>
                         </div>
                     </form>

@@ -8,13 +8,13 @@
                             <h1 class="display-1 text-uppercase mb-3">{{$slider->title}}</h1>
                             <p class="fs-5 mb-5">{{$slider->subtitle}}</p>
                             <div class="d-flex">
-                                <a class="btn btn-secondary py-3 px-4" href="#contactus">Join Us Now</a>
+                                <a class="btn btn-secondary py-3 px-4" href="{{$slider->button_link}}">{{$slider->button_text}}</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="carousel-img">
-                            <img class="w-100" src="{{ asset('storage/' . $slider->photo) }}" alt="{{$slider->title}}">
+                            <img class="w-100" src="{{ $slider->getMedia("*")[0]->getFullUrl() }}" alt="{{$slider->title}}">
                         </div>
                     </div>
                 </div>

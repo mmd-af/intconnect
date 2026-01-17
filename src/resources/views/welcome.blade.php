@@ -186,7 +186,7 @@
                 <p class="text-dark wow fadeIn" data-wow-delay="0.6s"><i
                         class="fa fa-check text-primary me-2"></i>teset etete</p>
                 <div class="d-flex mt-4 wow fadeIn" data-wow-delay="0.7s">
-                    <a class="btn btn-secondary py-3 px-4" href="#!">Join Us Now</a>
+                    <a class="btn btn-secondary py-3 px-4" href="#contact">Join Us Now</a>
                 </div>
             </div>
         </div>
@@ -207,7 +207,7 @@
                         explicabo laudantium natus nesciunt nostrum nulla perferendis placeat tempore, temporibus veniam
                         veritatis.</p>
                     <div class="d-flex justify-content-center wow fadeIn" data-wow-delay="0.7s">
-                        <a class="btn btn-secondary py-3 px-4" href="#!">Join Us Now</a>
+                        <a class="btn btn-secondary py-3 px-4" href="#contact">Join Us Now</a>
                     </div>
                 </div>
             </div>

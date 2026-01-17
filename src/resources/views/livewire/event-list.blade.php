@@ -9,7 +9,7 @@
             @foreach($events as $event)
                 <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.1s">
                     <div class="event-item h-100 p-4">
-                        <img class="img-fluid w-100 mb-4" src="{{ asset('storage/' . $event->photo) }}"
+                        <img class="img-fluid w-100 mb-4" src="{{ $event->getMedia("*")[0]->getFullUrl() }}"
                              alt="{{$event->title}}" style="height: 200px; object-fit: cover;">
                         <a href="{{ route('event.show', $event->slug) }}" class="h3 d-inline-block">
                          {{$event->title}}

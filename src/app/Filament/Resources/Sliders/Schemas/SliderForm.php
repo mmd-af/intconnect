@@ -23,7 +23,7 @@ class SliderForm
                 TextInput::make('button_link')
                     ->default(null),
                 SpatieMediaLibraryFileUpload::make('photo')
-                    ->collection('sliders')
+                    ->disk('public')
                     ->image()
                     ->required(),
             ]);

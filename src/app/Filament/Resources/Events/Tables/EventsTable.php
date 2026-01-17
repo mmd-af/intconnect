@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -18,7 +19,7 @@ class EventsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('photo')->disk('public'),
+                SpatieMediaLibraryImageColumn::make('photo'),
                 TextColumn::make('title')
                     ->searchable(),
                 TextColumn::make('date')
