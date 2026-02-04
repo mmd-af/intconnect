@@ -12,10 +12,10 @@
         <div class="row g-0">
             <div class="col-lg-11">
                 <div class="h-100 py-5 d-flex align-items-center">
-                    <button type="button" class="btn-play" data-bs-toggle="modal"
-                            data-src="https://www.youtube.com/embed/dMCkWVSOabU" data-bs-target="#videoModal">
-                        <span></span>
-                    </button>
+{{--                    <button type="button" class="btn-play" data-bs-toggle="modal"--}}
+{{--                            data-src="https://www.youtube.com/embed/dMCkWVSOabU" data-bs-target="#videoModal">--}}
+{{--                        <span></span>--}}
+{{--                    </button>--}}
                     <h3 class="ms-5 mb-0">Together, we can build a world where everyone has the chance to thrive.
                     </h3>
                 </div>
@@ -31,23 +31,22 @@
 <!-- Video End -->
 
 <!-- Video Modal Start -->
-<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content rounded-0">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- 16:9 aspect ratio -->
-                <div class="ratio ratio-16x9">
-                    <iframe class="embed-responsive-item" src="" id="video" allowfullscreen
-                            allowscriptaccess="always" allow="autoplay"></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
+{{--    <div class="modal-dialog">--}}
+{{--        <div class="modal-content rounded-0">--}}
+{{--            <div class="modal-header">--}}
+{{--                <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>--}}
+{{--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
+{{--            </div>--}}
+{{--            <div class="modal-body">--}}
+{{--                <div class="ratio ratio-16x9">--}}
+{{--                    <iframe class="embed-responsive-item" src="" id="video" allowfullscreen--}}
+{{--                            allowscriptaccess="always" allow="autoplay"></iframe>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <!-- Video Modal End -->
 
 <!-- About Start -->
@@ -76,7 +75,7 @@
                             <p class="text-dark mb-4"><i class="fa fa-check text-primary me-2"></i>Personal development
                                 (programs that help you achieve your goals).</p>
                             <div class="text-start">
-                                <a class="btn btn-secondary py-2 px-4" href="#!">Contact Now</a>
+                                <a class="btn btn-secondary py-2 px-4" href="#!">Join us</a>
                             </div>
                         </div>
                     </div>
@@ -137,61 +136,61 @@
 <!-- Service End -->
 
 <!-- Features Start -->
-<div class="container-fluid py-5">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6">
-                <div class="rounded overflow-hidden">
-                    <div class="row g-0">
-                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
-                            <div class="text-center bg-primary py-5 px-4 h-100">
-                                <i class="fa fa-users fa-3x text-secondary mb-3"></i>
-                                <h1 class="display-5 mb-0" data-toggle="counter-up">500</h1>
-                                <span class="text-dark">Team Members</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
-                            <div class="text-center bg-secondary py-5 px-4 h-100">
-                                <i class="fa fa-award fa-3x text-primary mb-3"></i>
-                                <h1 class="display-5 text-white mb-0" data-toggle="counter-up">70</h1>
-                                <span class="text-white">Award Winning</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.5s">
-                            <div class="text-center bg-secondary py-5 px-4 h-100">
-                                <i class="fa fa-list-check fa-3x text-primary mb-3"></i>
-                                <h1 class="display-5 text-white mb-0" data-toggle="counter-up">3000</h1>
-                                <span class="text-white">Total Projects</span>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.7s">
-                            <div class="text-center bg-primary py-5 px-4 h-100">
-                                <i class="fa fa-comments fa-3x text-secondary mb-3"></i>
-                                <h1 class="display-5 mb-0" data-toggle="counter-up">7000</h1>
-                                <span class="text-dark">Client's Review</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <p class="section-title bg-white text-start text-primary pe-3">Why Us!</p>
-                <h1 class="display-6 mb-4 wow fadeIn" data-wow-delay="0.2s">Few Reasons Why People Choosing Us!</h1>
-                <p class="mb-4 wow fadeIn" data-wow-delay="0.3s">We believe in creating opportunities and empowering
-                    communities through education.</p>
-                <p class="text-dark wow fadeIn" data-wow-delay="0.4s"><i
-                        class="fa fa-check text-primary me-2"></i>testt tstetetete</p>
-                <p class="text-dark wow fadeIn" data-wow-delay="0.5s"><i
-                        class="fa fa-check text-primary me-2"></i>test estetete</p>
-                <p class="text-dark wow fadeIn" data-wow-delay="0.6s"><i
-                        class="fa fa-check text-primary me-2"></i>teset etete</p>
-                <div class="d-flex mt-4 wow fadeIn" data-wow-delay="0.7s">
-                    <a class="btn btn-secondary py-3 px-4" href="#contact">Join Us Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="container-fluid py-5">--}}
+{{--    <div class="container">--}}
+{{--        <div class="row g-5 align-items-center">--}}
+{{--            <div class="col-lg-6">--}}
+{{--                <div class="rounded overflow-hidden">--}}
+{{--                    <div class="row g-0">--}}
+{{--                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">--}}
+{{--                            <div class="text-center bg-primary py-5 px-4 h-100">--}}
+{{--                                <i class="fa fa-users fa-3x text-secondary mb-3"></i>--}}
+{{--                                <h1 class="display-5 mb-0" data-toggle="counter-up">500</h1>--}}
+{{--                                <span class="text-dark">Team Members</span>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">--}}
+{{--                            <div class="text-center bg-secondary py-5 px-4 h-100">--}}
+{{--                                <i class="fa fa-award fa-3x text-primary mb-3"></i>--}}
+{{--                                <h1 class="display-5 text-white mb-0" data-toggle="counter-up">70</h1>--}}
+{{--                                <span class="text-white">Award Winning</span>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.5s">--}}
+{{--                            <div class="text-center bg-secondary py-5 px-4 h-100">--}}
+{{--                                <i class="fa fa-list-check fa-3x text-primary mb-3"></i>--}}
+{{--                                <h1 class="display-5 text-white mb-0" data-toggle="counter-up">3000</h1>--}}
+{{--                                <span class="text-white">Total Projects</span>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.7s">--}}
+{{--                            <div class="text-center bg-primary py-5 px-4 h-100">--}}
+{{--                                <i class="fa fa-comments fa-3x text-secondary mb-3"></i>--}}
+{{--                                <h1 class="display-5 mb-0" data-toggle="counter-up">7000</h1>--}}
+{{--                                <span class="text-dark">Client's Review</span>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="col-lg-6">--}}
+{{--                <p class="section-title bg-white text-start text-primary pe-3">Why Us!</p>--}}
+{{--                <h1 class="display-6 mb-4 wow fadeIn" data-wow-delay="0.2s">Few Reasons Why People Choosing Us!</h1>--}}
+{{--                <p class="mb-4 wow fadeIn" data-wow-delay="0.3s">We believe in creating opportunities and empowering--}}
+{{--                    communities through education.</p>--}}
+{{--                <p class="text-dark wow fadeIn" data-wow-delay="0.4s"><i--}}
+{{--                        class="fa fa-check text-primary me-2"></i>testt tstetetete</p>--}}
+{{--                <p class="text-dark wow fadeIn" data-wow-delay="0.5s"><i--}}
+{{--                        class="fa fa-check text-primary me-2"></i>test estetete</p>--}}
+{{--                <p class="text-dark wow fadeIn" data-wow-delay="0.6s"><i--}}
+{{--                        class="fa fa-check text-primary me-2"></i>teset etete</p>--}}
+{{--                <div class="d-flex mt-4 wow fadeIn" data-wow-delay="0.7s">--}}
+{{--                    <a class="btn btn-secondary py-3 px-4" href="#contact">Join Us Now</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <!-- Features End -->
 
 <!-- Banner Start -->

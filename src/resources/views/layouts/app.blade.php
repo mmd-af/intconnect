@@ -58,18 +58,18 @@
         </div>
         <div class="col-lg-8 d-none d-lg-block">
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="d-flex justify-content-end">
-                        <div class="flex-shrink-0 btn-square bg-primary">
-                            <i class="fa fa-phone-alt text-dark"></i>
-                        </div>
-                        <div class="ms-2">
-                            <h6 class="text-primary mb-0">Call Us</h6>
-                            <span class="text-white">+40 123 456789</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
+{{--                <div class="col-lg-4">--}}
+{{--                    <div class="d-flex justify-content-end">--}}
+{{--                        <div class="flex-shrink-0 btn-square bg-primary">--}}
+{{--                            <i class="fa fa-phone-alt text-dark"></i>--}}
+{{--                        </div>--}}
+{{--                        <div class="ms-2">--}}
+{{--                            <h6 class="text-primary mb-0">Call Us</h6>--}}
+{{--                            <span class="text-white">+40 123 456789</span>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+                <div class="col-lg-6">
                     <div class="d-flex justify-content-end">
                         <div class="flex-shrink-0 btn-square bg-primary">
                             <i class="fa fa-envelope-open text-dark"></i>
@@ -80,14 +80,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="d-flex justify-content-end">
                         <div class="flex-shrink-0 btn-square bg-primary">
                             <i class="fa fa-map-marker-alt text-dark"></i>
                         </div>
                         <div class="ms-2">
                             <h6 class="text-primary mb-0">Address</h6>
-                            <span class="text-white">Strada Amilcar C. Săndulescu 3</span>
+                            <span class="text-white">Amilcar C. Săndulescu 11</span>
                         </div>
                     </div>
                 </div>
@@ -117,8 +117,8 @@
                 <div class="d-none d-lg-flex ms-auto">
                     <a class="btn btn-square btn-dark ms-2"
                        href="https://www.instagram.com/internationalconnect.bucharest/"><i class="fab fa-instagram"></i></a>
-                    <a class="btn btn-square btn-dark ms-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-dark ms-2" href="#!"><i class="fab fa-youtube"></i></a>
+{{--                    <a class="btn btn-square btn-dark ms-2" href="#!"><i class="fab fa-facebook-f"></i></a>--}}
+{{--                    <a class="btn btn-square btn-dark ms-2" href="#!"><i class="fab fa-youtube"></i></a>--}}
                 </div>
             </div>
         </nav>
@@ -136,15 +136,15 @@
         <div class="row g-5 py-5">
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Our Office</h4>
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Strada Amilcar C. Săndulescu 3</p>
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Amilcar C. Săndulescu 11</p>
+{{--                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>--}}
                 <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@intconnect.ro</p>
-                <div class="d-flex pt-3">
-                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-x-twitter"></i></a>
-                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-youtube"></i></a>
-                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+{{--                <div class="d-flex pt-3">--}}
+{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-x-twitter"></i></a>--}}
+{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-facebook-f"></i></a>--}}
+{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-youtube"></i></a>--}}
+{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-linkedin-in"></i></a>--}}
+{{--                </div>--}}
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Quick Links</h4>
