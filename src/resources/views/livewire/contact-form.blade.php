@@ -3,7 +3,7 @@
         <div class="row g-0">
             <div class="col-lg-7 donate-text bg-light py-5 wow fadeIn" data-wow-delay="0.1s">
                 <div class="d-flex flex-column justify-content-center h-100 p-5 wow fadeIn" data-wow-delay="0.3s">
-                    <h1 class="display-6 mb-4">Let's Contact...</h1>
+                    <h1 class="display-6 mb-4">Do you have questions?</h1>
                 </div>
             </div>
             <div class="col-lg-5 donate-form bg-primary py-5 text-center wow fadeIn" data-wow-delay="0.5s">
@@ -33,7 +33,7 @@
                              <div class="col-12">
                                 <div class="form-floating">
                                     <textarea class="form-control" placeholder="Leave a description here" id="description" style="height: 150px" wire:model="description"></textarea>
-                                    <label for="description">Description</label>
+                                    <label for="description">Your message</label>
                                     @error('description') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>

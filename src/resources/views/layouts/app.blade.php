@@ -21,10 +21,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-{{--    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))--}}
-{{--        @vite(['resources/css/app.css', 'resources/js/app.js'])--}}
-{{--    @endif--}}
-
 <!-- Libraries Stylesheet -->
     <link href="{{asset('template/lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('template/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
@@ -58,17 +54,6 @@
         </div>
         <div class="col-lg-8 d-none d-lg-block">
             <div class="row">
-{{--                <div class="col-lg-4">--}}
-{{--                    <div class="d-flex justify-content-end">--}}
-{{--                        <div class="flex-shrink-0 btn-square bg-primary">--}}
-{{--                            <i class="fa fa-phone-alt text-dark"></i>--}}
-{{--                        </div>--}}
-{{--                        <div class="ms-2">--}}
-{{--                            <h6 class="text-primary mb-0">Call Us</h6>--}}
-{{--                            <span class="text-white">+40 123 456789</span>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
                 <div class="col-lg-6">
                     <div class="d-flex justify-content-end">
                         <div class="flex-shrink-0 btn-square bg-primary">
@@ -111,14 +96,14 @@
                 <div class="navbar-nav me-auto">
                     <a href="{{url('/')}}" class="nav-item nav-link active">Home</a>
                     <a href="#about-us" class="nav-item nav-link">About</a>
-                    <a href="#service" class="nav-item nav-link">Service</a>
+                    <a href="#language-classes" class="nav-item nav-link">Language Classes</a>
+                    <a href="#events" class="nav-item nav-link">Events</a>
+                    <a href="#language-classes" class="nav-item nav-link">Gallery</a>
                     <a href="#contact" class="nav-item nav-link">Contact</a>
                 </div>
                 <div class="d-none d-lg-flex ms-auto">
                     <a class="btn btn-square btn-dark ms-2"
                        href="https://www.instagram.com/internationalconnect.bucharest/"><i class="fab fa-instagram"></i></a>
-{{--                    <a class="btn btn-square btn-dark ms-2" href="#!"><i class="fab fa-facebook-f"></i></a>--}}
-{{--                    <a class="btn btn-square btn-dark ms-2" href="#!"><i class="fab fa-youtube"></i></a>--}}
                 </div>
             </div>
         </nav>
@@ -137,14 +122,7 @@
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Our Office</h4>
                 <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Amilcar C. Săndulescu 11</p>
-{{--                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>--}}
                 <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@intconnect.ro</p>
-{{--                <div class="d-flex pt-3">--}}
-{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-x-twitter"></i></a>--}}
-{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-facebook-f"></i></a>--}}
-{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-youtube"></i></a>--}}
-{{--                    <a class="btn btn-square btn-primary me-2" href="#!"><i class="fab fa-linkedin-in"></i></a>--}}
-{{--                </div>--}}
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Quick Links</h4>
@@ -152,38 +130,6 @@
                 <a class="btn btn-link" href="#contact">Contact Us</a>
                 <a class="btn btn-link" href="#service">Our Services</a>
                 <a class="btn btn-link" href="#contact">Support</a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h4 class="text-light mb-4">Business Hours</h4>
-                <p class="mb-1">Monday - Friday</p>
-                <h6 class="text-light">09:00 am - 07:00 pm</h6>
-                <p class="mb-1">Saturday</p>
-                <h6 class="text-light">09:00 am - 12:00 pm</h6>
-                <p class="mb-1">Sunday</p>
-                <h6 class="text-light">Closed</h6>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h4 class="text-light mb-4">Gallery</h4>
-                <div class="row g-2">
-                    <div class="col-4">
-                        <img class="img-fluid w-100" src="{{asset('template/img/gallery-1.jpg')}}" alt="">
-                    </div>
-                    <div class="col-4">
-                        <img class="img-fluid w-100" src="{{asset('template/img/gallery-2.jpg')}}" alt="">
-                    </div>
-                    <div class="col-4">
-                        <img class="img-fluid w-100" src="{{asset('template/img/gallery-3.jpg')}}" alt="">
-                    </div>
-                    <div class="col-4">
-                        <img class="img-fluid w-100" src="{{asset('template/img/gallery-4.jpg')}}" alt="">
-                    </div>
-                    <div class="col-4">
-                        <img class="img-fluid w-100" src="{{asset('template/img/gallery-5.jpg')}}" alt="">
-                    </div>
-                    <div class="col-4">
-                        <img class="img-fluid w-100" src="{{asset('template/img/gallery-6.jpg')}}" alt="">
-                    </div>
-                </div>
             </div>
         </div>
         <div class="copyright pt-5">

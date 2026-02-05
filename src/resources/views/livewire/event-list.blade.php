@@ -1,9 +1,9 @@
 <!-- Event Start -->
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" id="events">
     <div class="container">
         <div class="text-center mx-auto wow fadeIn" data-wow-delay="0.1s" style="max-width: 500px;">
             <p class="section-title bg-white text-center text-primary px-3">Events</p>
-            <h1 class="display-6 mb-4">Be a Part of a Global Movement</h1>
+{{--            <h1 class="display-6 mb-4">Be a Part of a Global Movement</h1>--}}
         </div>
         <div class="row g-4">
             @foreach($events as $event)
