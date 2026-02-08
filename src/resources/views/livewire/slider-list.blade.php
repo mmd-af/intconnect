@@ -1,5 +1,5 @@
 <div class="container-fluid p-0 wow fadeIn" data-wow-delay="0.1s">
-    <div class="owl-carousel header-carousel py-5">
+    <div class="owl-carousel general-carousel header-carousel py-5">
         @foreach($sliders as $slider)
             <div class="container py-5">
                 <div class="row g-5 align-items-center">

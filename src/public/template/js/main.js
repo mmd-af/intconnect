@@ -73,11 +73,9 @@
 
     // Header carousel
     $(".header-carousel").owlCarousel({
-        animateOut: 'slideOutRight',
-        animateIn: 'slideInLeft',
         items: 1,
         autoplay: true,
-        smartSpeed: 1000,
+        smartSpeed: 600,
         dots: false,
         loop: true,
         nav: true,
@@ -87,6 +85,21 @@
         ]
     });
 
+    // Gallery carousel
+    $(".gallery-carousel").owlCarousel({
+        animateOut: 'slideOutDown',
+        animateIn: 'flipInX',
+        items: 1,
+        autoplay: true,
+        smartSpeed: 600,
+        dots: false,
+        loop: true,
+        nav: true,
+        navText: [
+            '<i class="bi bi-chevron-left"></i>',
+            '<i class="bi bi-chevron-right"></i>'
+        ]
+    });
 
     // Testimonials carousel
     $(".testimonial-carousel").owlCarousel({

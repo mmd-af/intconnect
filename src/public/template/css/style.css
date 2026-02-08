@@ -142,25 +142,25 @@
 
 
 /*** Header Carousel ***/
-.header-carousel {
+.general-carousel {
     position: relative;
     background: url(../img/bg.jpg) center center no-repeat;
     background-size: cover;
 }
 
-.header-carousel .carousel-img {
+.general-carousel .carousel-img {
     position: relative;
 }
 
-.header-carousel .owl-nav {
+.general-carousel .owl-nav {
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
 }
 
-.header-carousel .owl-nav .owl-prev,
-.header-carousel .owl-nav .owl-next {
+.general-carousel .owl-nav .owl-prev,
+.general-carousel .owl-nav .owl-next {
     width: 45px;
     height: 45px;
     margin: 10px 0;
