@@ -54,7 +54,7 @@
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.2s">
-                    <img class="img-fluid w-100" src="{{asset('template/img/about.jpg')}}" alt="International Connect">
+                    <img class="img-thumbnail w-100" src="{{asset('template/img/about.jpg')}}" alt="International Connect">
                 </div>
                 <div class="col-lg-6">
                     <p class="section-title bg-white text-start text-primary pe-3">About Us</p>
