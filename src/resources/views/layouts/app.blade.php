@@ -95,11 +95,11 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav me-auto">
                     <a href="{{url('/')}}" class="nav-item nav-link active">Home</a>
-                    <a href="#about-us" class="nav-item nav-link">About</a>
+                    <a href="#about-us" class="nav-item nav-link">About Us</a>
                     <a href="#language-classes" class="nav-item nav-link">Language Classes</a>
                     <a href="#events" class="nav-item nav-link">Events</a>
-                    <a href="#language-classes" class="nav-item nav-link">Gallery</a>
-                    <a href="#contact" class="nav-item nav-link">Contact</a>
+                    <a href="#gallery" class="nav-item nav-link">Gallery</a>
+                    <a href="#contact" class="nav-item nav-link">Contact Us</a>
                 </div>
                 <div class="d-none d-lg-flex ms-auto">
                     <a class="btn btn-square btn-dark ms-2"
@@ -126,10 +126,12 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Quick Links</h4>
+                <a class="btn btn-link" href="{{url('/')}}">Home</a>
                 <a class="btn btn-link" href="#about-us">About Us</a>
+                <a class="btn btn-link" href="#language-classes">Language Classes</a>
+                <a class="btn btn-link" href="#events">Events</a>
+                <a class="btn btn-link" href="#gallery">Gallery</a>
                 <a class="btn btn-link" href="#contact">Contact Us</a>
-                <a class="btn btn-link" href="#service">Our Services</a>
-                <a class="btn btn-link" href="#contact">Support</a>
             </div>
         </div>
         <div class="copyright pt-5">

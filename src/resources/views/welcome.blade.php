@@ -152,8 +152,8 @@
                     <div class="team-item d-flex h-100 p-4">
                         <div class="team-detail pe-4">
                             <img class="img-fluid mb-4" src="{{asset('template/img/team-1.jpg')}}" alt="">
-                            <h3>Boris Johnson</h3>
-                            <span>Founder & CEO</span>
+                            <h3>Andreea Peteu</h3>
+{{--                            <span>Founder & CEO</span>--}}
                         </div>
                         <div class="team-social bg-light d-flex flex-column justify-content-center flex-shrink-0 p-4">
                             <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-facebook-f"></i></a>
@@ -167,8 +167,8 @@
                     <div class="team-item d-flex h-100 p-4">
                         <div class="team-detail pe-4">
                             <img class="img-fluid mb-4" src="{{asset('template/img/team-2.jpg')}}" alt="">
-                            <h3>Donald Pakura</h3>
-                            <span>Project Manager</span>
+                            <h3>Miha</h3>
+{{--                            <span>Project Manager</span>--}}
                         </div>
                         <div class="team-social bg-light d-flex flex-column justify-content-center flex-shrink-0 p-4">
                             <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-facebook-f"></i></a>
@@ -182,8 +182,8 @@
                     <div class="team-item d-flex h-100 p-4">
                         <div class="team-detail pe-4">
                             <img class="img-fluid mb-4" src="{{asset('template/img/team-3.jpg')}}" alt="">
-                            <h3>Alexander Bell</h3>
-                            <span>Volunteer</span>
+                            <h3>Adriana</h3>
+{{--                            <span>Volunteer</span>--}}
                         </div>
                         <div class="team-social bg-light d-flex flex-column justify-content-center flex-shrink-0 p-4">
                             <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-facebook-f"></i></a>
@@ -402,7 +402,7 @@
     <!-- Newsletter End -->
 
     <!-- Gallery Start -->
-    <div class="container-fluid p-0 wow fadeIn mt-5" data-wow-delay="0.1s">
+    <div class="container-fluid p-0 wow fadeIn mt-5" data-wow-delay="0.1s" id="gallery">
         <div class="text-center mx-auto wow fadeIn" data-wow-delay="0.1s" style="max-width: 500px;">
             <p class="section-title bg-white text-center text-primary px-3">Gallery</p>
         </div>
