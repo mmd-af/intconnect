@@ -6,10 +6,10 @@
 
     <title>{{ config('app.name', 'International Connect') }}</title>
 
-    {!! \Artesaos\SEOTools\Facades\SEOTools::generate() !!}
+{!! \Artesaos\SEOTools\Facades\SEOTools::generate() !!}
 
-    <!-- Favicon -->
-    <link href="{{asset('template/img/favicon.ico')}}" rel="icon">
+<!-- Favicon -->
+    <link href="{{asset('favicon.ico')}}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- Libraries Stylesheet -->
+    <!-- Libraries Stylesheet -->
     <link href="{{asset('template/lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('template/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
 
@@ -112,7 +112,7 @@
 <!-- Navbar End -->
 
 
- @yield('content')
+@yield('content')
 
 
 <!-- Footer Start -->
@@ -123,6 +123,9 @@
                 <h4 class="text-light mb-4">Our Office</h4>
                 <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Amilcar C. Săndulescu 11</p>
                 <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@intconnect.ro</p>
+                <p class="mb-2">
+                    <img src="{{asset('logo.png')}}" class="img-fluid w-50" alt="International Connect">
+                </p>
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Quick Links</h4>
