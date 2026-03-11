@@ -332,11 +332,11 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8 py-5 text-center">
                         <h1 class="display-6 font-chewy wow fadeIn" data-wow-delay="0.3s">Come and see!</h1>
-                        <p class="fs-5 mb-4 wow fadeIn" data-wow-delay="0.5s">Lorem ipsum dolor sit amet, consectetur
-                            adipisicing elit. Alias aliquam animi aspernatur autem commodi consequuntur dicta error ex
-                            explicabo laudantium natus nesciunt nostrum nulla perferendis placeat tempore, temporibus
-                            veniam
-                            veritatis.</p>
+                        <p class="fs-5 mb-4 wow fadeIn" data-wow-delay="0.5s">
+
+                            give me something for here :)
+
+                            .</p>
                         <div class="d-flex justify-content-center wow fadeIn" data-wow-delay="0.7s">
                             <a class="btn btn-secondary py-3 px-4" href="#contact">Join Us Now</a>
                         </div>

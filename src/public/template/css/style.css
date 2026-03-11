@@ -538,7 +538,7 @@
 .testimonial-carousel .owl-next {
     width: 45px;
     height: 45px;
-    margin: 10px 0;
+    margin: 5px 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -556,7 +556,11 @@
 
 @media (max-width: 768px) {
     .testimonial-carousel .owl-nav {
-        top: 6.3rem;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
     }
 }
 
