@@ -127,55 +127,88 @@
                 <p class="section-title bg-white text-center text-primary px-3">Our Team</p>
                 <h1 class="display-6 mb-4">Meet the team</h1>
             </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="team-item d-flex h-100 p-4">
-                        <div class="team-detail pe-4">
-                            <img class="img-fluid mb-4" src="{{asset('template/img/team-1.jpg')}}" alt="">
-                            <h3>Miha</h3>
-                            <span>Education: Agricultural Engineering;
-                                Teaching English as a second language
-                            </span>
-                            <p>
-                                Cross cultural experience: lived overseas for 17 years
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 g-4">
+                <!-- Miha -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center rounded-4">
+                        <img src="{{asset('template/img/miha.jpg')}}" class="card-img-top rounded-top-4" alt="Miha">
+                        <div class="card-body px-3 py-3">
+                            <h6 class="fw-bold mb-1">Miha</h6>
+                            <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Agricultural
+                                Engineering · Teaching English as a second language</p>
+                            <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lived overseas for 17
+                                years</p>
+                            <p class="fst-italic text-muted small">"I like to learn languages, learn about different
+                                cultures, read and paint."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Milad -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center rounded-4">
+                        <img src="{{asset('template/img/milad.jpg')}}" class="card-img-top rounded-top-4" alt="Milad">
+                        <div class="card-body px-3 py-3">
+                            <h6 class="fw-bold mb-1">Milad</h6>
+                            <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Civil
+                                Engineering</p>
+                            <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lives in Romania since
+                                2019</p>
+                            <p class="fst-italic text-muted small">"I like sports and traveling. My dream destination is
+                                Brazil."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fadi -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center rounded-4">
+                        <img src="{{asset('template/img/fadi.jpg')}}" class="card-img-top rounded-top-4" alt="Fadi">
+                        <div class="card-body px-3 py-3">
+                            <h6 class="fw-bold mb-1">Fadi</h6>
+                            <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Architecture
+                                and Interior Design</p>
+                            <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lives in Romania since
+                                2020</p>
+                            <p class="fst-italic text-muted small">"I like lego and football. My favorite team is
+                                Barcelona!"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adriana -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center rounded-4">
+                        <img src="{{asset('template/img/adriana.jpg')}}" class="card-img-top rounded-top-4" alt="Adriana">
+                        <div class="card-body px-3 py-3">
+                            <h6 class="fw-bold mb-1">Adriana</h6>
+                            <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Veterinary
+                                medicine · Teaching English as a second language</p>
+                            <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lived 10 years overseas
                             </p>
-                            <i>
-                                I like to learn languages, learn about different cultures, read and paint.
-                            </i>
+                            <p class="fst-italic text-muted small">"I like history, medicine and baking."</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.3s">
-                    <div class="team-item d-flex h-100 p-4">
-                        <div class="team-detail pe-4">
-                            <img class="img-fluid mb-4" src="{{asset('template/img/team-2.jpg')}}" alt="">
-                            <h3>Miha</h3>
-                            {{--                            <span>Project Manager</span>--}}
-                        </div>
-                        <div class="team-social bg-light d-flex flex-column justify-content-center flex-shrink-0 p-4">
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-x-twitter"></i></a>
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-instagram"></i></a>
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="team-item d-flex h-100 p-4">
-                        <div class="team-detail pe-4">
-                            <img class="img-fluid mb-4" src="{{asset('template/img/team-3.jpg')}}" alt="">
-                            <h3>Adriana</h3>
-                            {{--                            <span>Volunteer</span>--}}
-                        </div>
-                        <div class="team-social bg-light d-flex flex-column justify-content-center flex-shrink-0 p-4">
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-x-twitter"></i></a>
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-instagram"></i></a>
-                            <a class="btn btn-square btn-primary my-2" href="#!"><i class="fab fa-youtube"></i></a>
+
+                <!-- Andreea -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm text-center rounded-4">
+                        <img src="{{asset('template/img/andreea.jpg')}}" class="card-img-top rounded-top-4" alt="Andreea">
+                        <div class="card-body px-3 py-3">
+                            <h6 class="fw-bold mb-1">Andreea</h6>
+                            <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Accounting
+                                · Coach</p>
+                            <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>International student in
+                                the USA</p>
+                            <p class="fst-italic text-muted small">"I like sports, nature and photography."</p>
                         </div>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </div>
     <!-- Team End -->
