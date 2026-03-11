@@ -123,9 +123,6 @@
                 <h4 class="text-light mb-4">Our Office</h4>
                 <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Amilcar C. Săndulescu 11</p>
                 <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@intconnect.ro</p>
-                <p class="mb-2">
-                    <img src="{{asset('logo.png')}}" class="img-fluid w-50" alt="International Connect">
-                </p>
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-4">Quick Links</h4>
@@ -135,6 +132,11 @@
                 <a class="btn btn-link" href="#events">Events</a>
                 <a class="btn btn-link" href="#gallery">Gallery</a>
                 <a class="btn btn-link" href="#contact">Contact Us</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <p class="mb-2">
+                    <img src="{{asset('logo.png')}}" class="img-fluid w-75" alt="International Connect">
+                </p>
             </div>
         </div>
         <div class="copyright pt-5">
