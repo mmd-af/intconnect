@@ -11,7 +11,7 @@
                     <div class="event-item h-100 p-4">
                         <img class="img-fluid w-100 mb-4" src="{{ $event->getMedia("*")[0]->getFullUrl() }}"
                              alt="{{$event->title}}" style="height: 200px; object-fit: cover;">
-                        <a href="{{ route('event.show', $event->slug) }}" class="h3 d-inline-block">
+                        <a href="{{ route('event.show', $event->slug) }}" class="h3 font-times d-inline-block">
                          {{$event->title}}
                         </a>
                         <p>{{ Str::limit($event->description, 160) }}

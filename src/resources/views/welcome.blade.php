@@ -46,7 +46,7 @@
                     <div class="row g-4 pt-2">
                         <div class="col-sm-12 wow fadeIn" data-wow-delay="0.4s">
                             <div class="h-100 text-start">
-                                <h3>What we offer</h3>
+                                <h3 class="font-times">What we offer</h3>
                                 <p><i class="fa fa-check text-primary me-2"></i>Romanian and English
                                     language practice groups.</p>
                                 <p><i class="fa fa-check text-primary me-2"></i>Activities and
@@ -77,7 +77,7 @@
             <div class="row g-5">
                 <div class="col-md-12 col-lg-4 col-xl-3 wow fadeIn" data-wow-delay="0.1s">
                     <div class="service-title">
-                        <h1 class="display-6 mb-4">Our values</h1>
+                        <h1 class="display-6 font-chewy mb-4">Our values</h1>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-8 col-xl-9">
@@ -87,7 +87,7 @@
                                 <div class="btn-square bg-light mb-4">
                                     <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
                                 </div>
-                                <h3>Connection</h3>
+                                <h3 class="font-times">Connection</h3>
                                 <p class="mb-2">We build bridges between cultures and backgrounds, creating a welcoming
                                     environment where lasting friendships can grow.</p>
                             </div>
@@ -97,7 +97,7 @@
                                 <div class="btn-square bg-light mb-4">
                                     <i class="fa-solid fa-arrow-up-right-dots fa-2x text-secondary"></i>
                                 </div>
-                                <h3>Growth</h3>
+                                <h3 class="font-times">Growth</h3>
                                 <p class="mb-2">We value continual learning and personal development in every area of
                                     life.</p>
                             </div>
@@ -107,7 +107,7 @@
                                 <div class="btn-square bg-light mb-4">
                                     <i class="fa-solid fa-arrow-right-to-city fa-2x text-secondary"></i>
                                 </div>
-                                <h3>Initiative</h3>
+                                <h3 class="font-times">Initiative</h3>
                                 <p class="mb-2">We believe in mutual giving and participation, where everyone
                                     contributes
                                     and takes part in building up our community.</p>
@@ -125,7 +125,7 @@
         <div class="container">
             <div class="text-center mx-auto wow fadeIn" data-wow-delay="0.1s" style="max-width: 500px;">
                 <p class="section-title bg-white text-center text-primary px-3">Our Team</p>
-                <h1 class="display-6 mb-4">Meet the team</h1>
+                <h1 class="display-6 font-chewy mb-4">Meet the team</h1>
             </div>
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-5 g-4">
@@ -134,7 +134,7 @@
                     <div class="card h-100 border-0 shadow-sm text-center rounded-4">
                         <img src="{{asset('template/img/miha.jpg')}}" class="card-img-top rounded-top-4" alt="Miha">
                         <div class="card-body px-3 py-3">
-                            <h6 class="fw-bold mb-1">Miha</h6>
+                            <h6 class="fw-bold font-times mb-1">Miha</h6>
                             <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Agricultural
                                 Engineering · Teaching English as a second language</p>
                             <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lived overseas for 17
@@ -150,7 +150,7 @@
                     <div class="card h-100 border-0 shadow-sm text-center rounded-4">
                         <img src="{{asset('template/img/milad.jpg')}}" class="card-img-top rounded-top-4" alt="Milad">
                         <div class="card-body px-3 py-3">
-                            <h6 class="fw-bold mb-1">Milad</h6>
+                            <h6 class="fw-bold font-times mb-1">Milad</h6>
                             <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Civil
                                 Engineering</p>
                             <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lives in Romania since
@@ -166,7 +166,7 @@
                     <div class="card h-100 border-0 shadow-sm text-center rounded-4">
                         <img src="{{asset('template/img/fadi.jpg')}}" class="card-img-top rounded-top-4" alt="Fadi">
                         <div class="card-body px-3 py-3">
-                            <h6 class="fw-bold mb-1">Fadi</h6>
+                            <h6 class="fw-bold font-times mb-1">Fadi</h6>
                             <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Architecture
                                 and Interior Design</p>
                             <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lives in Romania since
@@ -182,7 +182,7 @@
                     <div class="card h-100 border-0 shadow-sm text-center rounded-4">
                         <img src="{{asset('template/img/adriana.jpg')}}" class="card-img-top rounded-top-4" alt="Adriana">
                         <div class="card-body px-3 py-3">
-                            <h6 class="fw-bold mb-1">Adriana</h6>
+                            <h6 class="fw-bold font-times mb-1">Adriana</h6>
                             <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Veterinary
                                 medicine · Teaching English as a second language</p>
                             <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>Lived 10 years overseas
@@ -197,7 +197,7 @@
                     <div class="card h-100 border-0 shadow-sm text-center rounded-4">
                         <img src="{{asset('template/img/andreea.jpg')}}" class="card-img-top rounded-top-4" alt="Andreea">
                         <div class="card-body px-3 py-3">
-                            <h6 class="fw-bold mb-1">Andreea</h6>
+                            <h6 class="fw-bold font-times mb-1">Andreea</h6>
                             <p class="small text-success fw-semibold mb-2"><i class="bi bi-mortarboard-fill me-1"></i>Accounting
                                 · Coach</p>
                             <p class="text-muted small mb-2"><i class="bi bi-globe2 me-1"></i>International student in
@@ -219,8 +219,8 @@
             <div class="row g-5">
                 <div class="col-md-12 col-lg-4 col-xl-3 wow fadeIn" data-wow-delay="0.1s">
                     <div class="testimonial-title">
-                        <h1 class="display-6 mb-4">What they say...</h1>
-                        <p class="fs-5 mb-0">Come and see.</p>
+                        <h1 class="display-6 font-chewy mb-4">What they say...</h1>
+                        <p class="fs-5 font-chewy mb-0">Come and see.</p>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-8 col-xl-9">
@@ -331,7 +331,7 @@
             <div class="banner-inner bg-light p-5 wow fadeIn" data-wow-delay="0.1s">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 py-5 text-center">
-                        <h1 class="display-6 wow fadeIn" data-wow-delay="0.3s">Come and see!</h1>
+                        <h1 class="display-6 font-chewy wow fadeIn" data-wow-delay="0.3s">Come and see!</h1>
                         <p class="fs-5 mb-4 wow fadeIn" data-wow-delay="0.5s">Lorem ipsum dolor sit amet, consectetur
                             adipisicing elit. Alias aliquam animi aspernatur autem commodi consequuntur dicta error ex
                             explicabo laudantium natus nesciunt nostrum nulla perferendis placeat tempore, temporibus
@@ -351,8 +351,8 @@
     <div class="container-fluid py-5" id="language-classes">
         <div class="container">
             <div class="text-center mx-auto wow fadeIn" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="section-title bg-white text-center text-primary px-3">Course</p>
-                <h1 class="display-6 mb-4">Learn the Language</h1>
+                <p class="section-title bg-white text-center text-primary px-3">courses</p>
+                <h1 class="display-6 font-chewy mb-4">Learn the Language</h1>
             </div>
             <div class="row g-5">
                 <div class="col-sm-6 col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
@@ -360,7 +360,7 @@
                         <div class="btn-square bg-light mb-4">
                             <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
                         </div>
-                        <h3>Language</h3>
+                        <h3 class="font-times">Language</h3>
                         <p class="mb-2">Description about the language.</p>
                     </div>
                 </div>
@@ -369,7 +369,7 @@
                         <div class="btn-square bg-light mb-4">
                             <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
                         </div>
-                        <h3>Language</h3>
+                        <h3 class="font-times">Language</h3>
                         <p class="mb-2">Description about the language.</p>
                     </div>
                 </div>
@@ -378,7 +378,7 @@
                         <div class="btn-square bg-light mb-4">
                             <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
                         </div>
-                        <h3>Language</h3>
+                        <h3 class="font-times">Language</h3>
                         <p class="mb-2">Description about the language.</p>
                     </div>
                 </div>
@@ -387,7 +387,7 @@
                         <div class="btn-square bg-light mb-4">
                             <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
                         </div>
-                        <h3>Language</h3>
+                        <h3 class="font-times">Language</h3>
                         <p class="mb-2">Description about the language.</p>
                     </div>
                 </div>

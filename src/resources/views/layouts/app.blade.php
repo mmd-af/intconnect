@@ -14,8 +14,24 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600;700&family=Open+Sans&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Josefin+Sans:wght@600;700&family=Open+Sans&display=swap"
           rel="stylesheet">
+
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif !important;
+        }
+        .font-chewy {
+            font-family: 'Chewy', system-ui !important;
+            text-transform: none !important;
+        }
+        .font-times {
+            font-family: "Times New Roman", Times, serif !important;
+        }
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+            font-family: inherit;
+        }
+    </style>
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">

@@ -5,7 +5,7 @@
                 <div class="row g-5 align-items-center">
                     <div class="col-lg-6">
                         <div class="carousel-text">
-                            <h1 class="display-1 text-uppercase mb-3">{{$slider->title}}</h1>
+                            <h1 class="display-1 font-chewy mb-3">{{$slider->title}}</h1>
                             <p class="fs-5 mb-5">{{$slider->subtitle}}</p>
                             <div class="d-flex">
                                 <a class="btn btn-secondary py-3 px-4" href="{{$slider->button_link}}">{{$slider->button_text}}</a>
