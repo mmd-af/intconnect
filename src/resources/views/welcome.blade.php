@@ -220,7 +220,6 @@
                 <div class="col-md-12 col-lg-4 col-xl-3 wow fadeIn" data-wow-delay="0.1s">
                     <div class="testimonial-title">
                         <h1 class="display-6 font-chewy mb-4">What they say...</h1>
-                        <p class="fs-5 font-chewy mb-0">Come and see.</p>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-8 col-xl-9">
@@ -331,12 +330,10 @@
             <div class="banner-inner bg-light p-5 wow fadeIn" data-wow-delay="0.1s">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 py-5 text-center">
-                        <h1 class="display-6 font-chewy wow fadeIn" data-wow-delay="0.3s">Come and see!</h1>
-                        <p class="fs-5 mb-4 wow fadeIn" data-wow-delay="0.5s">
-
-                            give me something for here :)
-
-                            .</p>
+                        <h1
+                            class="display-6 font-chewy wow fadeIn my-5"
+                            data-wow-delay="0.3s"
+                            style="font-size: calc(2rem + 2vw);">Come and see!</h1>
                         <div class="d-flex justify-content-center wow fadeIn" data-wow-delay="0.7s">
                             <a class="btn btn-secondary py-3 px-4" href="#contact">Join Us Now</a>
                         </div>
