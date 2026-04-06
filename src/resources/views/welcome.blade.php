@@ -401,63 +401,6 @@
     {{--    @livewire('subscription-form')--}}
     <!-- Newsletter End -->
 
-    <!-- Gallery Start -->
-    <div class="container-fluid p-0 wow fadeIn mt-5" data-wow-delay="0.1s" id="gallery">
-        <div class="text-center mx-auto wow fadeIn" data-wow-delay="0.1s" style="max-width: 500px;">
-            <p class="section-title bg-white text-center text-primary px-3">Gallery</p>
-        </div>
-        <div class="owl-carousel general-carousel gallery-carousel py-5">
-            <div class="container py-5">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="carousel-img">
-                            <img class="w-100 img-thumbnail" src="{{asset('template/img/gallery-1.jpg')}}"
-                                 alt="International Connect">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="carousel-img">
-                            <img class="w-100 img-thumbnail" src="{{asset('template/img/gallery-2.jpg')}}"
-                                 alt="International Connect">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container py-5">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="carousel-img">
-                            <img class="w-100 img-thumbnail" src="{{asset('template/img/gallery-3.jpg')}}"
-                                 alt="International Connect">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="carousel-img">
-                            <img class="w-100 img-thumbnail" src="{{asset('template/img/gallery-4.jpg')}}"
-                                 alt="International Connect">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container py-5">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="carousel-img">
-                            <img class="w-100 img-thumbnail" src="{{asset('template/img/gallery-5.jpg')}}"
-                                 alt="International Connect">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="carousel-img">
-                            <img class="w-100 img-thumbnail" src="{{asset('template/img/gallery-6.jpg')}}"
-                                 alt="International Connect">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gallery Start -->
+    @livewire('gallery-list')
 
 @endsection
