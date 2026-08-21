@@ -344,54 +344,7 @@
     </div>
     <!-- Banner End -->
 
-    <!-- Learn the Language Start -->
-    <div class="container-fluid py-5" id="language-classes">
-        <div class="container">
-            <div class="text-center mx-auto wow fadeIn" data-wow-delay="0.1s" style="max-width: 500px;">
-                <p class="section-title bg-white text-center text-primary px-3">courses</p>
-                <h1 class="display-6 font-chewy mb-4">Learn the Language</h1>
-            </div>
-            <div class="row g-5">
-                <div class="col-sm-6 col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="service-item h-100">
-                        <div class="btn-square bg-light mb-4">
-                            <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
-                        </div>
-                        <h3 class="font-times">Language</h3>
-                        <p class="mb-2">Description about the language.</p>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="service-item h-100">
-                        <div class="btn-square bg-light mb-4">
-                            <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
-                        </div>
-                        <h3 class="font-times">Language</h3>
-                        <p class="mb-2">Description about the language.</p>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
-                    <div class="service-item h-100">
-                        <div class="btn-square bg-light mb-4">
-                            <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
-                        </div>
-                        <h3 class="font-times">Language</h3>
-                        <p class="mb-2">Description about the language.</p>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.4s">
-                    <div class="service-item h-100">
-                        <div class="btn-square bg-light mb-4">
-                            <i class="fa-solid fa-circle-nodes fa-2x text-secondary"></i>
-                        </div>
-                        <h3 class="font-times">Language</h3>
-                        <p class="mb-2">Description about the language.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Learn the Language -->
+    @livewire('language-list')
 
     @livewire('event-list')
 
