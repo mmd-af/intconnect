@@ -20,7 +20,7 @@ class GalleryResource extends Resource
 {
     protected static ?string $model = Gallery::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 60;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Photo;
 

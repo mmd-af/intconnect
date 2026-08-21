@@ -18,7 +18,7 @@ class SubscriptionResource extends Resource
 {
     protected static ?string $model = Subscription::class;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 50;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ReceiptPercent;
 
